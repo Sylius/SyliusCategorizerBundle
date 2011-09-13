@@ -1,0 +1,35 @@
+{% extends 'SyliusCatalogBundle:Backend:layout.html.twig' %}
+
+{% block content %}
+
+<h1>Zarządzanie katalogiem...</h1>
+
+	<p>Zarządzaj kategoriami na jakie podzielona jest oferta Twojego sklepu.</p>
+	
+<a href="{{ path('sylius_catalog_backend_category_new') }}">dodaj kategorię</a> <br />
+	
+<table cellspacing="1">
+		
+	<thead>
+	
+		<tr>
+		
+			<th style="width: 1%;">ID</th>
+			
+			<th>nazwa</th>
+			
+			<th>opcje</th>
+
+		</tr>
+	
+	</thead>
+	
+	<tbody>
+	
+	{{ sylius_catalog_backend_render_categories(categories)|raw }}
+	
+	</tbody>
+	
+</table>
+	
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'SyliusCatalogBundle:Backend:layout.html.twig' %}
+
+{% block content %}
+
+<h2>creating new category.</h2>
+
+	<p>use this form to create new category...</p>
+
+<form action="{{ path('sylius_catalog_backend_category_create' }}" method="post">
+
+<fieldset>
+
+	<legend>general info.</legend>
+	{{ form_errors(form.name) }}
+	<dl>
+	
+		<dt><label>name</label>...</dt>
+		<dd>{{ form_widget(form.name) }}</dd>
+
+	</dl>
+	{{ form_errors(form.description) }}
+	<dl>
+	
+		<dt><label>desc</label>...</dt>
+		<dd>{{ form_widget(form.description) }}</dd>
+
+	</dl>
+	{{ form_errors(form.visible) }}
+	<dl>
+	
+		<dt><label>visible?</label></dt>
+		<dd>{{ form_widget(form.visible) }}</dd>
+
+	</dl>
+
+</fieldset>
+		
+{{ form_rest(form) }} <br />
+		
+<input type="submit" value="add category" />
+
+</form>
+
+<br />
+
+{% endblock content %}

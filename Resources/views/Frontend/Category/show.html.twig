@@ -1,0 +1,10 @@
+{% extends 'SyliusFrontendBundle::layout.html.twig' %}
+
+{% block content %}
+
+<h2>category...</h2>
+<h3>{{ category.name }}</h3> <br />
+
+{% render 'sylius_catalog.controller.frontend.product:listAction' with {'category': category, 'page': page} %}
+
+{% endblock content %}

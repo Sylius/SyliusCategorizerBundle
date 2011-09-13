@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+
+ This file is part of the Sylius package.
+
+ (c) Paweł Jędrzejewski
+ 
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<parameters>
+		<parameter key="sylius_catalog.form.data_transformer.category_to_id.class">Sylius\Bundle\CatalogBundle\Form\DataTransformer\CategoryToIdTransformer</parameter>
+		<parameter key="sylius_catalog.form.data_transformer.categories_to_array.class">Sylius\Bundle\CatalogBundle\Form\DataTransformer\CategoriesToArrayTransformer</parameter>
+		<parameter key="sylius_catalog.form.choice_list.category.class">Sylius\Bundle\CatalogBundle\Form\ChoiceList\CategoryChoiceList</parameter>
+	</parameters>
+
+    <services>
+        <service id="sylius_catalog.form.type.category" class="%sylius_catalog.form.type.category.class%">
+        	<argument>%sylius_catalog.model.category.class%</argument>
+        	<tag name="form.type" alias="sylius_catalog_category" />
+        </service>
+        
+        <service id="sylius_catalog.form.type.category_choice" class="%sylius_catalog.form.type.category_choice.class%">
+        	<argument type="service" id="sylius_catalog.form.choice_list.category" />
+        	<argument type="service" id="sylius_catalog.form.data_transformer.categories_to_array" />
+        	<argument type="service" id="sylius_catalog.form.data_transformer.category_to_id" />
+        	<tag name="form.type" alias="sylius_catalog_category_choice" />
+        </service>
+        
+        <service id="sylius_catalog.form.choice_list.category" class="%sylius_catalog.form.choice_list.category.class%">
+        	<argument type="service" id="sylius_catalog.manager.category" />
+        </service>
+        
+        <service id="sylius_catalog.form.data_transformer.category_to_id" class="%sylius_catalog.form.data_transformer.category_to_id.class%">
+        	<argument type="service" id="sylius_catalog.manager.category" />
+        </service>
+        <service id="sylius_catalog.form.data_transformer.categories_to_array" class="%sylius_catalog.form.data_transformer.categories_to_array.class%">
+        	<argument type="service" id="sylius_catalog.manager.category" />
+        </service>
+    </services>
+
+</container>
