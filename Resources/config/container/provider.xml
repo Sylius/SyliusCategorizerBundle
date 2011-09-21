@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!-- 
 
@@ -16,13 +16,14 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
 	<parameters>
-	    <parameter key="sylius_catalog.manager.category.class">Sylius\Bundle\CatalogBundle\Entity\CategoryManager</parameter>
+		<parameter key="sylius_catalog.provider.class">Sylius\Bundle\CatalogBundle\Provider\CatalogProvider</parameter>
 	</parameters>
-	
-	<services>
-	    <service id="sylius_catalog.manager.category" class="%sylius_catalog.manager.category.class%">
-	        <argument type="service" id="doctrine.orm.default_entity_manager" />
-	    </service>
-	</services>
+
+    <services>
+        <service id="sylius_catalog.provider" class="%sylius_catalog.provider.class%">
+        	<argument>%sylius_catalog.model.catalog.class%</argument>
+        	<argument>%sylius_catalog.catalogs%</argument>
+        </service>
+    </services>
 
 </container>

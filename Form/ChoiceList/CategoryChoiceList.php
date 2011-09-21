@@ -11,8 +11,9 @@
 
 namespace Sylius\Bundle\CatalogBundle\Form\ChoiceList;
 
-use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
+use Sylius\Bundle\CatalogBundle\Model\CatalogInterface;
 use Sylius\Bundle\CatalogBundle\Model\CategoryManagerInterface;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
 
 /**
  * Category choice list.
@@ -29,6 +30,13 @@ class CategoryChoiceList extends ArrayChoiceList
     protected $categoryManager;
     
     /**
+     * Catalog.
+     * 
+     * @var CatalogInterface
+     */
+    protected $catalog;
+    
+    /**
      * Constructor.
      * 
      * @param $categoryManager
@@ -39,11 +47,25 @@ class CategoryChoiceList extends ArrayChoiceList
     }
     
     /**
+     * Defines from which catalog load categories.
+     * 
+     * @param CatalogInterface $catalog
+     */
+    public function defineCatalog(CatalogInterface $catalog)
+    {
+        $this->catalog = $catalog;
+    }
+    
+    /**
      * {@inheritdoc}
      */
     public function getChoices()
     {
-        foreach ($this->categoryManager->findCategories() as $category) {
+        if (null == $this->catalog) {
+            throw new \RuntimeException('Catalog must be defined to load categories.');
+        }
+        
+        foreach ($this->categoryManager->findCategories($this->catalog) as $category) {
             $this->choices[$category->getId()] = $category->getName();
         }
         

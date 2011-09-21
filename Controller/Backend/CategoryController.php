@@ -25,13 +25,18 @@ use Sylius\Bundle\CatalogBundle\EventDispatcher\SyliusCatalogEvents;
 class CategoryController extends ContainerAware
 {
     /**
-     * Display table of categories.
+     * Display table of categories of specific catalog.
+     * 
+     * @param string $catalog
      */
-    public function listAction()
+    public function listAction($catalogAlias)
     {
-    	$categories = $this->container->get('sylius_catalog.manager.category')->findCategories();
+        $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
+        
+    	$categories = $this->container->get('sylius_catalog.manager.category')->findCategories($catalog);
     	
-        return $this->container->get('templating')->renderResponse('SyliusCatalogBundle:Backend/Category:list.html.' . $this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.list'), array(
+            'catalog' => $catalog,
         	'categories' => $categories
         ));
     }
@@ -39,21 +44,25 @@ class CategoryController extends ContainerAware
     /**
      * Displays category.
      */
-    public function showAction($id)
+    public function showAction($catalogAlias, $id)
     {
+        $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
+        
         $categoryManager = $this->container->get('sylius_catalog.manager.category');
-    	$category = $categoryManager->findCategoryBy(array('id' => $id));
+        
+    	$category = $categoryManager->findCategory($catalog, $id);
     	
     	if (!$category) {
     	    throw new NotFoundHttpException('Requested category does not exist.');
     	}
     	
-        $paginator = $categoryManager->createPaginator($category);
+        $paginator = $categoryManager->createPaginator($catalog, $category);
         $paginator->setCurrentPage($this->container->get('request')->query->get('page', 1), true, true);
         
         $items = $paginator->getCurrentPageResults();
-    	
-        return $this->container->get('templating')->renderResponse('SyliusCatalogBundle:Backend/Category:show.html.' . $this->getEngine(), array(
+
+        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.show'), array(
+            'catalog'	=> $catalog,
         	'category'  => $category,
             'items'     => $items,
             'paginator' => $paginator,
@@ -63,11 +72,13 @@ class CategoryController extends ContainerAware
     /**
      * Creating a category action.
      */
-    public function createAction()
+    public function createAction($catalogAlias)
     {
-        $category = $this->container->get('sylius_catalog.manager.category')->createCategory();
+        $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
+        
+        $category = $this->container->get('sylius_catalog.manager.category')->createCategory($catalog);
 
-        $form = $this->container->get('form.factory')->create($this->container->get('sylius_catalog.form.type.category'));
+        $form = $this->container->get('sylius_catalog.form.factory.category')->create($catalog);
         $form->setData($category);
         
         $request = $this->container->get('request');
@@ -79,11 +90,12 @@ class CategoryController extends ContainerAware
                 $this->container->get('event_dispatcher')->dispatch(SyliusCatalogEvents::CATEGORY_CREATE, new FilterCategoryEvent($category));
                 $this->container->get('sylius_catalog.manipulator.category')->create($category);
                
-                return new RedirectResponse($this->container->get('router')->generate('sylius_catalog_backend_category_list'));
+                return new RedirectResponse($this->container->get('router')->generate('sylius_catalog_backend_category_list', array('catalogAlias' => $catalog->getAlias())));
             }
         }
-        
-        return $this->container->get('templating')->renderResponse('SyliusCatalogBundle:Backend/Category:create.html.' . $this->getEngine(), array(
+
+        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.create'), array(
+            'catalog' => $catalog,
         	'form' => $form->createView()
         ));
     }
@@ -91,15 +103,17 @@ class CategoryController extends ContainerAware
     /**
      * Updating a category.
      */
-    public function updateAction($id)
+    public function updateAction($catalogAlias, $id)
     {
-        $category = $this->container->get('sylius_catalog.manager.category')->findCategory($id);
+        $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
+        
+        $category = $this->container->get('sylius_catalog.manager.category')->findCategory($catalog, $id);
         
         if (!$category) {
             throw new NotFoundHttpException('Requested category does not exist.');
         }
         
-        $form = $this->container->get('form.factory')->create($this->container->get('sylius_catalog.form.type.category'));        
+        $form = $this->container->get('sylius_catalog.form.factory.category')->create($catalog);      
         $form->setData($category);
         
         $request = $this->container->get('request');
@@ -111,11 +125,14 @@ class CategoryController extends ContainerAware
                 $this->container->get('event_dispatcher')->dispatch(SyliusCatalogEvents::CATEGORY_UPDATE, new FilterCategoryEvent($category));
                 $this->container->get('sylius_catalog.manipulator.category')->update($category);
                 
-                return new RedirectResponse($this->container->get('router')->generate('sylius_catalog_backend_category_list'));
+                return new RedirectResponse($this->container->get('router')->generate('sylius_catalog_backend_category_list', array(
+                    'catalogAlias' => $catalog->getAlias()
+                )));
             }
         }
         
-        return $this->container->get('templating')->renderResponse('SyliusCatalogBundle:Backend/Category:update.html.' . $this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.update'), array(
+            'catalog' => $catalog,
         	'form' => $form->createView(),
             'category' => $category
         ));
@@ -124,9 +141,11 @@ class CategoryController extends ContainerAware
 	/**
      * Deletes category.
      */
-    public function deleteAction($id)
+    public function deleteAction($catalogAlias, $id)
     {
-        $category = $this->container->get('sylius_catalog.manager.category')->findCategory($id);
+        $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
+        
+        $category = $this->container->get('sylius_catalog.manager.category')->findCategory($catalog, $id);
         
         if (!$category) {
             throw new NotFoundHttpException('Requested category does not exist.');
@@ -135,16 +154,8 @@ class CategoryController extends ContainerAware
         $this->container->get('event_dispatcher')->dispatch(SyliusCatalogEvents::CATEGORY_DELETE, new FilterCategoryEvent($category));
         $this->container->get('sylius_catalog.manipulator.category')->delete($category);
         
-        return new RedirectResponse($this->container->get('router')->generate('sylius_catalog_backend_category_list'));
-    }
-    
-    /**
-     * Returns templating engine name.
-     * 
-     * @return string
-     */
-    protected function getEngine()
-    {
-        return $this->container->getParameter('sylius_catalog.engine');
+        return new RedirectResponse($this->container->get('router')->generate('sylius_catalog_backend_category_list', array(
+            'catalogAlias' => $catalog->getAlias()
+        )));
     }
 }

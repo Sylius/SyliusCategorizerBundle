@@ -21,9 +21,10 @@ interface CategoryManagerInterface
     /**
      * Creates new category object.
      * 
+     * @param CatalogInterface $catalog
      * @return CategoryInterface
      */
-    function createCategory();
+    function createCategory(CatalogInterface $catalog);
 
     /**
      * Persist category.
@@ -42,38 +43,43 @@ interface CategoryManagerInterface
     /**
      * Finds category by id.
      * 
+     * @param CatalogInterface $catalog
      * @param integer $id
      * @return CategoryInterface
      */
-    function findCategory($id);
+    function findCategory(CatalogInterface $catalog, $id);
     
     /**
      * Finds category by criteria.
      * 
+     * @param CatalogInterface $catalog
      * @param array $criteria
      * @return CategoryInterface
      */
-    function findCategoryBy(array $criteria);
+    function findCategoryBy(CatalogInterface $catalog, array $criteria);
     
     /**
      * Finds all categories.
      * 
+     * @param CatalogInterface $catalog
      * @return array
      */
-    function findCategories();
+    function findCategories(CatalogInterface $catalog);
     
     /**
      * Finds categories by criteria.
      * 
+     * @param CatalogInterface $catalog
      * @param array $criteria
      * @return array
      */
-    function findCategoriesBy(array $criteria);
+    function findCategoriesBy(CatalogInterface $catalog, array $criteria);
     
     /**
-     * Returns FQCN of category.
+     * Returns paginator instance for given category.
      * 
-     * @return string
+     * @param CatalogInterface $catalog
+     * @param CategoryInterface $category
      */
-    function getClass();
+    function createPaginator(CatalogInterface $catalog, CategoryInterface $category);
 }

@@ -49,9 +49,35 @@ class SyliusCatalogExtension extends Extension
         
         $container->setParameter('sylius_catalog.driver', $config['driver']);
         $container->setParameter('sylius_catalog.engine', $config['engine']);
+        
+        $remappedCatalogsConfiguration = array();
+        
+        foreach($config['catalogs'] as $alias => $catalog) {
+            $remappedCatalogConfiguration = array(
+                'alias'    => $alias,
+                'mode'     => $catalog['mode']
+            );
+            
+            foreach ($catalog['classes'] as $key => $value) {
+                $remappedCatalogConfiguration[sprintf('classes.%s', $key)] = $value;
+            }
+            
+            foreach ($catalog['templates']['backend'] as $key => $value) {
+                $remappedCatalogConfiguration[sprintf('templates.backend.%s', $key)] = $value;
+            }
+            
+            foreach ($catalog['templates']['frontend'] as $key => $value) {
+                $remappedCatalogConfiguration[sprintf('templates.frontend.%s', $key)] = $value;
+            }
+            
+            $remappedCatalogsConfiguration[$alias] = $remappedCatalogConfiguration;
+        }
+
+        $container->setParameter('sylius_catalog.catalogs', $remappedCatalogsConfiguration);
          
         $configurations = array(
             'controllers',
+            'provider',
             'forms',
             'inflectors',
             'manipulators',
@@ -70,10 +96,6 @@ class SyliusCatalogExtension extends Extension
         $this->remapParametersNamespaces($config['classes']['controller'], $container, array(
             'backend'      => 'sylius_catalog.controller.backend.%s.class',
             'frontend'	   => 'sylius_catalog.controller.frontend.%s.class'
-        ));
-        
-        $this->remapParametersNamespaces($config['classes']['form'], $container, array(
-            'type'     			     => 'sylius_catalog.form.type.%s.class',
         ));
     }
     

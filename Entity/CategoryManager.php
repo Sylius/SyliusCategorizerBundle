@@ -11,12 +11,11 @@
 
 namespace Sylius\Bundle\CatalogBundle\Entity;
 
-use RuntimeException;
-use ReflectionClass;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Sylius\Bundle\CatalogBundle\Model\CatalogInterface;
 use Sylius\Bundle\CatalogBundle\Model\CategoryInterface;
 use Sylius\Bundle\CatalogBundle\Model\CategoryManager as BaseCategoryManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 
@@ -35,62 +34,57 @@ class CategoryManager extends BaseCategoryManager
     protected $entityManager;
     
     /**
-     * Entity repository.
+     * Repositories.
      * 
-     * @var EntityRepository
+     * @var array
      */
-    protected $repository;
+    protected $repositories = array();
     
     /**
      * Constructor.
      * 
      * @param Entity Manager $entityManager
-     * @param string		 $class The category model class
      */
-    public function __construct(EntityManager $entityManager, $class)
+    public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->repository = $this->entityManager->getRepository($class);
-        
-        parent::__construct($class);
     }
     
     /**
      * {@inheritdoc}
      */
-    public function createCategory()
+    public function createCategory(CatalogInterface $catalog)
     {
-        $class = $this->getClass();
+        $class = $catalog->getOption('classes.model');
         return new $class;
     }
     
 	/**
      * {@inheritdoc}
      */
-    public function createPaginator(CategoryInterface $category)
+    public function createPaginator(CatalogInterface $catalog, CategoryInterface $category)
     {
-        $metadata = $this->entityManager->getClassMetadata($this->class);
+        $categoryClass = get_class($category);
+        
+        $metadata = $this->entityManager->getClassMetadata($categoryClass);
         $itemAssociationMapping = $metadata->getAssociationMapping('items');
         
         $itemClass = $itemAssociationMapping['targetEntity'];
-        $itemClassReflection = new ReflectionClass($itemClass);
+        $itemClassReflection = new \ReflectionClass($itemClass);
         
-        if ($itemClassReflection->implementsInterface('Sylius\\Bundle\\CatalogBundle\\Model\SingleCategoryItemInterface')) {
-        
+        if ('S' == $catalog->getOption('mode')) {
         $queryBuilder = $this->entityManager->createQueryBuilder()
-            ->select('i')
-            ->from($itemClass, 'i')
-            ->where('i.category = ?1')
-            ->setParameter(1, $category->getId());         
-        } elseif ($itemClassReflection->implementsInterface('Sylius\\Bundle\\CatalogBundle\\Model\MultiCategoryItemInterface')) {
+                ->select('i')
+                ->from($itemClass, 'i')
+                ->where('i.category = ?1')
+                ->setParameter(1, $category->getId());         
+        } elseif ('M' == $catalog->getOption('mode')) {
             $queryBuilder = $this->entityManager->createQueryBuilder()
-            ->select('c')
-            ->from($this->class, 'c')
-            ->innerJoin('c.items', 'i')
-            ->where('c.id = ?1')
-            ->setParameter(1, $category->getId());  
-        } else {
-            throw new RuntimeException('The object associated with category as item must implement proper category item interface.');
+                ->select('i')
+                ->from($itemClass, 'i')
+                ->innerJoin('i.categories', 'c')
+                ->where('c.id = ?1')
+                ->setParameter(1, $category->getId());  
         }
             
         return new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
@@ -117,32 +111,49 @@ class CategoryManager extends BaseCategoryManager
     /**
      * {@inheritdoc}
      */
-    public function findCategory($id)
+    public function findCategory(CatalogInterface $catalog, $id)
     {
-        return $this->repository->find($id);
+        return $this->getRepository($catalog)->find($id);
     }
     
     /**
      * {@inheritdoc}
      */
-    public function findCategoryBy(array $criteria)
+    public function findCategoryBy(CatalogInterface $catalog, array $criteria)
     {
-        return $this->repository->findOneBy($criteria);
+        return $this->getRepository($catalog)->findOneBy($criteria);
     }
     
     /**
      * {@inheritdoc}
      */
-    public function findCategories()
+    public function findCategories(CatalogInterface $catalog)
     {
-        return $this->repository->findAll();
+        return $this->getRepository($catalog)->findAll();
     }
     
     /**
      * {@inheritdoc}
      */
-    public function findCategoriesBy(array $criteria)
+    public function findCategoriesBy(CatalogInterface $catalog, array $criteria)
     {
-        return $this->repository->findBy($criteria);
+        return $this->getRepository($catalog)->findBy($criteria);
+    }
+    
+    /**
+     * Returns repository for give class.
+     * 
+     * @param CatalogInterface $catalog
+     */
+    private function getRepository(CatalogInterface $catalog)
+    {
+        $categoryClass = $catalog->getOption('classes.model');
+        
+        if (!isset($this->repositories[$categoryClass])) {
+            
+            return $this->repositories[$categoryClass] = $this->entityManager->getRepository($categoryClass);
+        }
+        
+        return $this->repositories[$categoryClass];
     }
 }

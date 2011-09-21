@@ -25,31 +25,28 @@ use Symfony\Component\Console\Output\Output;
  */
 class DeleteCategoryCommand extends ContainerAwareCommand
 {
-    /**
-     * @see Command
-     */
     protected function configure()
     {
         $this
             ->setName('sylius:catalog:category:delete')
             ->setDescription('Deletes a category.')
             ->setDefinition(array(
+                new InputArgument('catalogAlias', InputArgument::REQUIRED, 'The catalog alias'),
                 new InputArgument('id', InputArgument::REQUIRED, 'The category id'),
             ))
             ->setHelp(<<<EOT
 The <info>sylius:assortment:category:delete</info> command deletes a category:
 
-  <info>php sylius/console sylius:catalog:category:delete 24</info>
+  <info>php sylius/console sylius:catalog:category:delete catalog 24</info>
 EOT
             );
     }
 
-    /**
-     * @see Command
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $category = $this->getContainer()->get('sylius_catalog.manager.category')->findCategory($input->getArgument('id'));
+        $catalog = $this->getContainer()->get('sylius_catalog.provider')->getCatalog($input->getArgument('catalogAlias'));
+        
+        $category = $this->getContainer()->get('sylius_catalog.manager.category')->findCategory($catalog, $input->getArgument('id'));
         
         if (!$category) {
             throw new \InvalidArgumentException(sprintf('The category with id "%s" does not exist.', $input->getArgument('id')));
@@ -60,11 +57,22 @@ EOT
         $output->writeln(sprintf('Deleted category with id: <comment>%s</comment>', $input->getArgument('id')));
     }
 
-    /**
-     * @see Command
-     */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
+        if (!$input->getArgument('catalogAlias')) {
+            $catalogAlias = $this->getHelper('dialog')->askAndValidate(
+                $output,
+                'Please insert catalog alias: ',
+                function($catalogAlias = null)
+                {
+                    if (empty($catalogAlias)) {
+                        throw new \Exception('Catalog must be specified.');
+                    }
+                    return $catalogAlias;
+                }
+            );
+            $input->setArgument('catalogAlias', $catalogAlias);
+        }
         if (!$input->getArgument('id')) {
             $id = $this->getHelper('dialog')->askAndValidate(
                 $output,

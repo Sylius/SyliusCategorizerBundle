@@ -11,12 +11,10 @@
 
 namespace Sylius\Bundle\CatalogBundle\Form\DataTransformer;
 
+use Sylius\Bundle\CatalogBundle\Model\CatalogInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-
 use Sylius\Bundle\CatalogBundle\Model\CategoryInterface;
-
 use Symfony\Component\Form\DataTransformerInterface;
 use Sylius\Bundle\CatalogBundle\Model\CategoryManagerInterface;
 
@@ -35,6 +33,13 @@ class CategoriesToArrayTransformer implements DataTransformerInterface
     protected $categoryManager;
     
     /**
+     * Catalog.
+     * 
+     * @var CatalogInterface
+     */
+    protected $catalog;
+    
+    /**
      * Constructor.
      * 
      * @param CategoryManagerInterface $categoryManager
@@ -42,6 +47,16 @@ class CategoriesToArrayTransformer implements DataTransformerInterface
     public function __construct(CategoryManagerInterface $categoryManager)
     {
         $this->categoryManager = $categoryManager;
+    }
+    
+    /**
+     * Defines from which catalog load categories.
+     * 
+     * @param CatalogInterface $catalog
+     */
+    public function defineCatalog(CatalogInterface $catalog)
+    {
+        $this->catalog = $catalog;
     }
     
     /**
@@ -60,8 +75,10 @@ class CategoriesToArrayTransformer implements DataTransformerInterface
         $categories = array();
         
         foreach ($value as $category) {
-            $categories[$category->getId()] = $category->getName();
+            $categories[] = $category->getId();
         }
+        
+        return $categories;
     }
     
     /**
@@ -77,10 +94,14 @@ class CategoriesToArrayTransformer implements DataTransformerInterface
             return array();
         }
         
+        if (null == $this->catalog) {
+            throw new \RuntimeException('Catalog must be defined to transform categories into array.');
+        }
+        
         $categories = array();
         
         foreach($value as $categoryId) {
-            $category = $this->categoryManager->findCategory($categoryId);
+            $category = $this->categoryManager->findCategory($this->catalog, $categoryId);
             
             if (!$category) {
                 throw new TransformationFailedException('Category with given id does not exist.');

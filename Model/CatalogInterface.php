@@ -12,12 +12,16 @@
 namespace Sylius\Bundle\CatalogBundle\Model;
 
 /**
- * Category item interface.
- * 
+ * Catalog representation interface.
+ *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
-interface MultiCategoryItemInterface extends CategoryItemInterface
+interface CatalogInterface
 {
-    public function getCategories();
-    public function setCategories(array $categories);
+    function getAlias();
+    function getOptions();
+    function setOptions(array $options);
+    function getOption($key);
+    function setOption($key, $value);
+    function hasOption($key);
 }

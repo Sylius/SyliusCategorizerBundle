@@ -18,30 +18,4 @@ namespace Sylius\Bundle\CatalogBundle\Model;
  */
 abstract class CategoryManager implements CategoryManagerInterface
 {
-    /**
-     * Category class.
-     * 
-     * @var string
-     */
-    protected $class;
-    
-    /**
-     * Constructor.
-     * 
-     * @var string $class
-     */
-    public function __construct($class)
-    {
-        $this->class = $class;
-    }
-    
-    /**
-     * Returns FQCN of category.
-     * 
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->class;
-    }
 }

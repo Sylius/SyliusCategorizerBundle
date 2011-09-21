@@ -67,7 +67,6 @@ abstract class Category implements CategoryInterface
     public function __construct()
     { 
         $this->position = 0;
-        $this->incrementUpdatedAt();
     }
 
     public function getId()

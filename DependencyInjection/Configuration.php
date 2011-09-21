@@ -39,12 +39,59 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('engine')->defaultValue('twig')->end()
             ->end();
-
+        
+        $this->addCatalogsSection($rootNode);
         $this->addClassesSection($rootNode);
 
         return $treeBuilder;
     }
 
+	/**
+     * Adds `catalogs` section.
+     */
+    private function addCatalogsSection(ArrayNodeDefinition $node)
+    {
+        $node
+            ->children()
+                ->arrayNode('catalogs')
+                    ->useAttributeAsKey('alias')
+                    ->requiresAtLeastOneElement()
+                    ->addDefaultsIfNotSet()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('mode')->defaultValue('S')->end()
+                            ->arrayNode('classes')
+                                ->children()
+                                    ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('form')->defaultValue('Sylius\\Bundle\\CatalogBundle\\Form\\Type\\CategoryFormType')->end()
+                                ->end()
+                            ->end()
+                            ->arrayNode('templates')
+                                ->children()
+                                    ->arrayNode('backend')
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode('list')->defaultValue('SyliusCatalogBundle:Backend/Category:list.html.twig')->end()
+                                            ->scalarNode('show')->defaultValue('SyliusCatalogBundle:Backend/Category:show.html.twig')->end()
+                                            ->scalarNode('create')->defaultValue('SyliusCatalogBundle:Backend/Category:create.html.twig')->end()
+                                            ->scalarNode('update')->defaultValue('SyliusCatalogBundle:Backend/Category:update.html.twig')->end()
+                                        ->end()
+                                    ->end()
+                                    ->arrayNode('frontend')
+                                        ->addDefaultsIfNotSet()
+                                        ->children()
+                                            ->scalarNode('list')->defaultValue('SyliusCatalogBundle:Backend/Category:list.html.twig')->end()
+                                            ->scalarNode('show')->defaultValue('SyliusCatalogBundle:Backend/Category:show.html.twig')->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+    
     /**
      * Adds `classes` section.
      */
@@ -53,13 +100,12 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->arrayNode('classes')
-                    ->isRequired()
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('model')
-                            ->isRequired()
+                            ->addDefaultsIfNotSet()
                             ->children()
-                                ->scalarNode('category')->isRequired()->cannotBeEmpty()->end()
+                                ->scalarNode('catalog')->defaultValue('Sylius\\Bundle\\CatalogBundle\\Model\\Catalog')->end()
                             ->end()
                         ->end()
                         ->arrayNode('controller')
@@ -75,18 +121,6 @@ class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('category')->defaultValue('Sylius\Bundle\\CatalogBundle\\Controller\Frontend\\CategoryController')->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('form')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->arrayNode('type')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('category')->defaultValue('Sylius\Bundle\\CatalogBundle\\Form\\Type\\CategoryFormType')->end()
-                                        ->scalarNode('category_choice')->defaultValue('Sylius\Bundle\\CatalogBundle\\Form\\Type\\CategoryChoiceType')->end()
                                     ->end()
                                 ->end()
                             ->end()

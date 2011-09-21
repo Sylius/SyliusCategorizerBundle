@@ -25,21 +25,25 @@ class CategoryController extends ContainerAware
     /**
      * Displays category.
      */
-    public function showAction($id, $slug)
+    public function showAction($catalogAlias, $id, $slug)
     {
+        $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
+        
         $categoryManager = $this->container->get('sylius_catalog.manager.category');
-    	$category = $categoryManager->findCategoryBy(array('id' => $id, 'slug' => $slug));
+        
+    	$category = $categoryManager->findCategoryBy($catalog, array('id' => $id, 'slug' => $slug));
     	
     	if (!$category) {
     	    throw new NotFoundHttpException('Requested category does not exist.');
     	}
     	
-        $paginator = $categoryManager->createPaginator($category);
+        $paginator = $categoryManager->createPaginator($catalog, $category);
         
         $paginator->setCurrentPage($this->container->get('request')->query->get('page', 1), true, true);
         $items = $paginator->getCurrentPageResults();
     	
-        return $this->container->get('templating')->renderResponse('SyliusCatalogBundle:Frontend/Category:show.html.' . $this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.frontend.show'), array(
+            'catalog'	=> $catalog,
         	'category'  => $category,
             'items'     => $items,
             'paginator' => $paginator,
@@ -49,22 +53,15 @@ class CategoryController extends ContainerAware
     /**
      * Renders all categories as list.
      */
-    public function listAction()
-    {       
-    	$categories = $this->container->get('sylius_catalog.manager.category')->findCategories();
+    public function listAction($catalogAlias)
+    {
+        $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
+        
+    	$categories = $this->container->get('sylius_catalog.manager.category')->findCategories($catalog);
     	
-        return $this->container->get('templating')->renderResponse('SyliusCatalogBundle:Frontend/Category:list.html.' . $this->getEngine(), array(
+        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.frontend.list'), array(
+            'catalog'	 => $catalog,
         	'categories' => $categories
         ));
-    }
-    
-    /**
-     * Returns templating engine name.
-     * 
-     * @return string
-     */
-    protected function getEngine()
-    {
-        return $this->container->getParameter('sylius_catalog.engine');
     }
 }

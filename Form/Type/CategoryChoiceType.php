@@ -14,6 +14,7 @@ namespace Sylius\Bundle\CatalogBundle\Form\Type;
 use Sylius\Bundle\CatalogBundle\Form\DataTransformer\CategoryToIdTransformer;
 use Sylius\Bundle\CatalogBundle\Form\DataTransformer\CategoriesToArrayTransformer;
 use Sylius\Bundle\CatalogBundle\Form\ChoiceList\CategoryChoiceList;
+use Sylius\Bundle\CatalogBundle\Provider\CatalogProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 
@@ -24,6 +25,13 @@ use Symfony\Component\Form\FormBuilder;
  */
 class CategoryChoiceType extends AbstractType
 {
+    /**
+     * Catalog provider.
+     * 
+     * @var CatalogProvider
+     */
+    protected $catalogProvider;
+    
     /**
      * Category choice list.
      * 
@@ -50,8 +58,9 @@ class CategoryChoiceType extends AbstractType
      * 
      * @param string $dataClass
      */
-    public function __construct(CategoryChoiceList $categoryChoiceList, CategoriesToArrayTransformer $categoriesToArrayTransformer, CategoryToIdTransformer $categoryToIdTransformer)
+    public function __construct(CatalogProvider $catalogProvider, CategoryChoiceList $categoryChoiceList, CategoriesToArrayTransformer $categoriesToArrayTransformer, CategoryToIdTransformer $categoryToIdTransformer)
     {
+        $this->catalogProvider = $catalogProvider;
         $this->categoryChoiceList = $categoryChoiceList;
         $this->categoriesToArrayTransformer = $categoriesToArrayTransformer;
         $this->categoryToIdTransformer = $categoryToIdTransformer;
@@ -62,11 +71,19 @@ class CategoryChoiceType extends AbstractType
      */
     public function buildForm(FormBuilder $builder, array $options)
     {
+        if (!isset($options['catalog_alias'])) {
+            throw new \InvalidArgumentException('Catalog must be defined in category choice type options.');
+        }
+        
+        $catalog = $this->catalogProvider->getCatalog($options['catalog_alias']);
+        
+        $this->categoryChoiceList->defineCatalog($catalog);
+        
         if ($options['multiple']) {
-            $builder
-                ->prependClientTransformer($this->categoriesToArrayTransformer);
-            ;
+            $this->categoriesToArrayTransformer->defineCatalog($catalog);
+            $builder->prependClientTransformer($this->categoriesToArrayTransformer);
         } else {
+            $this->categoryToIdTransformer->defineCatalog($catalog);
             $builder->prependClientTransformer($this->categoryToIdTransformer);
         }
     }
@@ -77,6 +94,7 @@ class CategoryChoiceType extends AbstractType
     public function getDefaultOptions(array $options)
     {
         return array(
+            'catalog_alias'	 => null,
             'multiple'		 => true,
             'expanded'		 => false,
             'choice_list'	 => $this->categoryChoiceList,

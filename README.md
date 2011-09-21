@@ -3,6 +3,8 @@ About SyliusCatalogBundle...
 
 This bundle is part of **Sylius e-commerce system**.
 Categorizing whatever you want just got easier.
+You can use this bundle to create multiple categorized catalogs of any object.
+It is still a prototype.
 
 About project "Sylius".
 -----------------------
