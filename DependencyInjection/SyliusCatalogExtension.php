@@ -55,7 +55,8 @@ class SyliusCatalogExtension extends Extension
         foreach($config['catalogs'] as $alias => $catalog) {
             $remappedCatalogConfiguration = array(
                 'alias'    => $alias,
-                'mode'     => $catalog['mode']
+                'mode'     => $catalog['mode'],
+                'property' => $catalog['property']
             );
             
             foreach ($catalog['classes'] as $key => $value) {

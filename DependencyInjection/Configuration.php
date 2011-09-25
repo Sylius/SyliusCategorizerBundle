@@ -60,6 +60,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('mode')->defaultValue('S')->end()
+                            ->scalarNode('property')->defaultValue('items')->end()
                             ->arrayNode('classes')
                                 ->children()
                                     ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()
