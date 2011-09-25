@@ -61,10 +61,12 @@ class CategoryController extends ContainerAware
         
         $items = $paginator->getCurrentPageResults();
 
+        $property = $catalog->getOption('property');
+        
         return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.show'), array(
             'catalog'	=> $catalog,
         	'category'  => $category,
-            'items'     => $items,
+            $property     => $items,
             'paginator' => $paginator,
         ));
     }

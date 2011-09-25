@@ -67,7 +67,7 @@ class CategoryManager extends BaseCategoryManager
         $categoryClass = get_class($category);
         
         $metadata = $this->entityManager->getClassMetadata($categoryClass);
-        $itemAssociationMapping = $metadata->getAssociationMapping('items');
+        $itemAssociationMapping = $metadata->getAssociationMapping($catalog->getOption('property'));
         
         $itemClass = $itemAssociationMapping['targetEntity'];
         $itemClassReflection = new \ReflectionClass($itemClass);
