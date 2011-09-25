@@ -14,6 +14,7 @@ Installation.
 + Downloading the bundle.
 + Autoloader configuration.
 + Adding bundle to kernel.
++ Importing routing cfgs.
 + Basic DIC configuration.
 + Creating your custom catalog.
 
@@ -84,10 +85,23 @@ public function registerBundles()
     );
 }
 ```
+### Importing routing cfgs.
+
+Now is the time to import routing files. Open up your `routing.yml` file. Customize the prefixes or whatever you want.
+
+``` yaml
+sylius_catalog_category:
+    resource: "@SyliusCatalogBundle/Resources/config/routing/frontend/category.yml"
+
+sylius_catalog_backend_category:
+    resource: "@SyliusCatalogBundle/Resources/config/routing/backend/category.yml"
+    prefix: /administration
+```
+
 ### Basic DIC configuration.
 
-`This documentation is under construction.`
+This section will be written sometime, you can read about it [here](http://blog.diweb.pl/7/easy-categorizing-with-symfony2).
 
 ### Creating your custom catalog.
 
-`This documentation is under construction.`
+This section will be written sometime, you can read about it [here](http://blog.diweb.pl/7/easy-categorizing-with-symfony2).
