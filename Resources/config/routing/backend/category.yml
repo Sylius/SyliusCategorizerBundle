@@ -1,19 +1,19 @@
 sylius_catalog_backend_category_create:
-    pattern: /{catalogAlias}/category/create
+    pattern: /{catalogAlias}/categories/create
     defaults: { _controller: sylius_catalog.controller.backend.category:createAction }
     
 sylius_catalog_backend_category_update:
-    pattern: /{catalogAlias}/category/{id}/update
+    pattern: /{catalogAlias}/categories/{id}/update
     defaults: { _controller: sylius_catalog.controller.backend.category:updateAction }
         
 sylius_catalog_backend_category_delete:
-    pattern: /{catalogAlias}/category/{id}/delete
+    pattern: /{catalogAlias}/categories/{id}/delete
     defaults: { _controller: sylius_catalog.controller.backend.category:deleteAction }
     
 sylius_catalog_backend_category_list:
-    pattern: /{catalogAlias}/categories
+    pattern: /{catalogAlias}/categories/list
     defaults: { _controller: sylius_catalog.controller.backend.category:listAction }
     
 sylius_catalog_backend_category_show:
-    pattern: /{catalogAlias}/category/{id}
+    pattern: /{catalogAlias}/categories/{id}
     defaults: { _controller: sylius_catalog.controller.backend.category:showAction }

@@ -65,6 +65,8 @@ class CategoryChoiceList extends ArrayChoiceList
             throw new \RuntimeException('Catalog must be defined to load categories.');
         }
         
+        $this->choices = array();
+        
         foreach ($this->categoryManager->findCategories($this->catalog) as $category) {
             $this->choices[$category->getId()] = $category->getName();
         }

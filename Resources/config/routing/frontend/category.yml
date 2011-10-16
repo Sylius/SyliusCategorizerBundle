@@ -1,7 +1,7 @@
 sylius_catalog_category_show:
-    pattern: /{catalogAlias}/category/{id}/{slug}
+    pattern: /{catalogAlias}/categories/{id}/{slug}
     defaults: { _controller: sylius_catalog.controller.frontend.category:showAction }
 
 sylius_catalog_category_list:
-    pattern: /{catalogAlias}/categories
+    pattern: /{catalogAlias}/categories/list
     defaults: { _controller: sylius_catalog.controller.frontend.category:listAction }
