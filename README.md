@@ -6,17 +6,16 @@ Categorizing whatever you want just got easier.
 You can use this bundle to create multiple categorized catalogs of any object.
 It is still a prototype.
 
-About project "Sylius".
------------------------
+Sylius.
+-------
 
-Sylius is meant to be a e-commerce system build on Symfony2 and by its community.
-The goal is to create a end-user application that will be developer friendly.
-Most of parts are fully functional and are powering 2 online shops that run in production.
-The work is focused on the bundles like PluginsBundle and ThemingBundle.
-More bundles are one their way to github. Stay tuned.
+**Sylius** is simple but **end-user and developer friendly** webshop engine built on top of Symfony2. Visit [sylius.org](http://sylius.org).
 
-**Please note!** I know that many of this bundles are far from being perfect.
-I just want to share my work with others and also learn something new.
+Examples.
+---------
+
+If you want to see this and other bundles in action, try out the [Sylius sandbox application](http://github.com/Sylius/Sylius-Sandbox).
+It's open sourced github project.
 
 Documentation.
 --------------
