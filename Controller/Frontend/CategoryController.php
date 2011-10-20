@@ -37,7 +37,13 @@ class CategoryController extends ContainerAware
     	    throw new NotFoundHttpException('Requested category does not exist.');
     	}
     	
-        $paginator = $categoryManager->createPaginator($catalog, $category);
+    	if ($catalog->getOption('sorter', false)) {
+    	    $delegatingSorter = $this->container->get($catalog->getOption('sorter'));
+    	} else { 
+    	    $delegatingSorter = null;
+    	}
+    	
+        $paginator = $categoryManager->createPaginator($catalog, $category, $delegatingSorter);
         
         $paginator->setCurrentPage($this->container->get('request')->query->get('page', 1), true, true);
         $items = $paginator->getCurrentPageResults();

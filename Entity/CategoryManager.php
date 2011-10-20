@@ -62,29 +62,36 @@ class CategoryManager extends BaseCategoryManager
 	/**
      * {@inheritdoc}
      */
-    public function createPaginator(CatalogInterface $catalog, CategoryInterface $category)
+    public function createPaginator(CatalogInterface $catalog, CategoryInterface $category, $sorter = null)
     {
         $categoryClass = get_class($category);
+        $property = $catalog->getOption('property');
         
         $metadata = $this->entityManager->getClassMetadata($categoryClass);
-        $itemAssociationMapping = $metadata->getAssociationMapping($catalog->getOption('property'));
+        $itemAssociationMapping = $metadata->getAssociationMapping($property);
         
         $itemClass = $itemAssociationMapping['targetEntity'];
         $itemClassReflection = new \ReflectionClass($itemClass);
         
+        $alias = $property[0];
+        
         if ('S' == $catalog->getOption('mode')) {
         $queryBuilder = $this->entityManager->createQueryBuilder()
-                ->select('i')
-                ->from($itemClass, 'i')
-                ->where('i.category = ?1')
+                ->select($alias)
+                ->from($itemClass, $alias)
+                ->where($alias . '.category = ?1')
                 ->setParameter(1, $category->getId());         
         } elseif ('M' == $catalog->getOption('mode')) {
             $queryBuilder = $this->entityManager->createQueryBuilder()
-                ->select('i')
-                ->from($itemClass, 'i')
-                ->innerJoin('i.categories', 'c')
-                ->where('c.id = ?1')
+                ->select($alias)
+                ->from($itemClass, $alias)
+                ->innerJoin($alias . '.categories', 'category')
+                ->where('category.id = ?1')
                 ->setParameter(1, $category->getId());  
+        }
+        
+        if (null !== $sorter) {
+            $sorter->sort($queryBuilder);
         }
             
         return new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));

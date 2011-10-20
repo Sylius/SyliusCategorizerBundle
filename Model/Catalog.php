@@ -51,11 +51,16 @@ class Catalog implements CatalogInterface
         $this->options = $options;
     }
     
-    public function getOption($key)
+    public function getOption($key, $default = null)
     {
         if ($this->hasOption($key)) {
             
             return $this->options[$key];
+        }
+        
+        if ($default !== null) {
+            
+            return $default;
         }
         
         throw new \InvalidArgumentException(sprintf('Requested option "%s" for catalog with alias "%s" does not exist.', $key, $this->getAlias()));

@@ -61,6 +61,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('mode')->defaultValue('S')->end()
                             ->scalarNode('property')->defaultValue('items')->end()
+                            ->scalarNode('sorter')->defaultValue(null)->end()
                             ->arrayNode('classes')
                                 ->children()
                                     ->scalarNode('model')->isRequired()->cannotBeEmpty()->end()

@@ -81,5 +81,5 @@ interface CategoryManagerInterface
      * @param CatalogInterface $catalog
      * @param CategoryInterface $category
      */
-    function createPaginator(CatalogInterface $catalog, CategoryInterface $category);
+    function createPaginator(CatalogInterface $catalog, CategoryInterface $category, $sorter = null);
 }

@@ -56,6 +56,7 @@ class SyliusCatalogExtension extends Extension
             $remappedCatalogConfiguration = array(
                 'alias'    => $alias,
                 'mode'     => $catalog['mode'],
+                'sorter'   => $catalog['sorter'],
                 'property' => $catalog['property']
             );
             
