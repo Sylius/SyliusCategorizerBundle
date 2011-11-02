@@ -70,4 +70,4 @@ Authors.
 --------
 
 The bundle was originally created by [Paweł Jędrzejewski](http://diweb.pl).
-See the list of [contributors](https://github.com/Sylius/SyliusCatalogBundle/contributors).le/contributors).
+See the list of [contributors](https://github.com/Sylius/SyliusCatalogBundle/contributors).
