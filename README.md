@@ -5,10 +5,30 @@ Categorizing whatever you want just got easier.
 You can use this bundle to create multiple categorized catalogs of any object.
 It is still a prototype, but it is at usable state.
 
+[![Build status...](https://secure.travis-ci.org/Sylius/SyliusCatalogBundle.png)](http://travis-ci.org/Sylius/SyliusCatalogBundle)
+
 Sylius.
 -------
 
 **Sylius** is simple but **end-user and developer friendly** webshop engine built on top of Symfony2. Visit [sylius.org](http://sylius.org).
+
+Testing and build status.
+-------------------------
+
+This bundle uses [travis-ci.org](http://travis-ci.org/Sylius/SyliusCatalogBundle) for CI.
+
+Before running tests, load the dependencies using [Composer](http://packagist.org).
+
+``` bash
+$ wget http://getcomposer.org/composer.phar
+$ php composer.phar install
+```
+
+Now you can test by simply using this command.
+
+``` bash
+$ phpunit
+```
 
 Examples.
 ---------
