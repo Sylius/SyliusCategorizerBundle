@@ -3,6 +3,7 @@ About SyliusCatalogBundle...
 
 Categorizing whatever you want just got easier.
 You can use this bundle to create multiple categorized catalogs of any object.
+
 It is still a prototype, but it is at usable state.
 
 [![Build status...](https://secure.travis-ci.org/Sylius/SyliusCatalogBundle.png)](http://travis-ci.org/Sylius/SyliusCatalogBundle)
