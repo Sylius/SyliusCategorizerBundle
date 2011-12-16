@@ -54,7 +54,7 @@ EOT
         
         $this->getContainer()->get('sylius_catalog.manipulator.category')->delete($category);
 
-        $output->writeln(sprintf('Deleted category with id: <comment>%s</comment>', $input->getArgument('id')));
+        $output->writeln(sprintf('<info>[Sylius]</info> Deleted category with id: <comment>%s</comment>', $input->getArgument('id')));
     }
 
     protected function interact(InputInterface $input, OutputInterface $output)
