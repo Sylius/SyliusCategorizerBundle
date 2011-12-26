@@ -1,5 +1,5 @@
 About SyliusCatalogBundle...
-=================================
+============================
 
 Categorizing whatever you want just got easier.
 You can use this bundle to create multiple categorized catalogs of any object.
@@ -40,7 +40,7 @@ It's open sourced github project.
 Documentation.
 --------------
 
-Docs are available [here](https://github.com/Sylius/SyliusCatalogBundle/blob/master/Resources/doc/index.md).
+Docs are available [here](http://sylius.org/docs/bundles/SyliusCatalogBundle.html).
 
 Dependencies.
 -------------
