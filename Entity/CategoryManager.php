@@ -11,6 +11,8 @@
 
 namespace Sylius\Bundle\CatalogBundle\Entity;
 
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
+
 use Sylius\Bundle\CatalogBundle\Model\CatalogInterface;
 use Sylius\Bundle\CatalogBundle\Model\CategoryInterface;
 use Sylius\Bundle\CatalogBundle\Model\CategoryManager as BaseCategoryManager;
@@ -75,13 +77,13 @@ class CategoryManager extends BaseCategoryManager
         
         $alias = $property[0];
         
-        if ('S' == $catalog->getOption('mode')) {
+        if (ClassMetadataInfo::ONE_TO_MANY === $itemAssociationMapping['type']) {
         $queryBuilder = $this->entityManager->createQueryBuilder()
                 ->select($alias)
                 ->from($itemClass, $alias)
                 ->where($alias . '.category = ?1')
                 ->setParameter(1, $category->getId());         
-        } elseif ('M' == $catalog->getOption('mode')) {
+        } elseif (ClassMetadataInfo::MANY_TO_MANY === $itemAssociationMapping['type']) {
             $queryBuilder = $this->entityManager->createQueryBuilder()
                 ->select($alias)
                 ->from($itemClass, $alias)
@@ -134,8 +136,12 @@ class CategoryManager extends BaseCategoryManager
     /**
      * {@inheritdoc}
      */
-    public function findCategories(CatalogInterface $catalog)
+    public function findCategories(CatalogInterface $catalog, $asTree = false)
     {
+        if ($asTree) {
+            return $this->getRepository($catalog)->getRootNodes();
+        }
+        
         return $this->getRepository($catalog)->findAll();
     }
     
@@ -145,6 +151,31 @@ class CategoryManager extends BaseCategoryManager
     public function findCategoriesBy(CatalogInterface $catalog, array $criteria)
     {
         return $this->getRepository($catalog)->findBy($criteria);
+    }
+    
+    public function moveCategoryUp(CatalogInterface $catalog, CategoryInterface $category)
+    {
+        if (!$catalog->getOption('nested')) {
+            throw new \InvalidArgumentException('This catalog does not support nested categories.');
+        }
+        
+        $repository = $this->getRepository($catalog);
+        
+        $repository->moveUp($category, 1);
+        $this->entityManager->clear();
+    }
+    
+    public function moveCategoryDown(CatalogInterface $catalog, CategoryInterface $category)
+    {
+        if (!$catalog->getOption('nested')) {
+            throw new \InvalidArgumentException('This catalog does not support nested categories.');
+        }
+    
+        $repository = $this->getRepository($catalog);
+        
+        $repository->moveDown($category, 1);
+        
+        $this->entityManager->clear();
     }
     
     /**

@@ -38,12 +38,12 @@ class CategoryController extends ContainerAware
     	}
     	
     	if ($catalog->getOption('sorter', false)) {
-    	    $delegatingSorter = $this->container->get($catalog->getOption('sorter'));
+    	    $sorter = $this->container->get($catalog->getOption('sorter'));
     	} else { 
-    	    $delegatingSorter = null;
+    	    $sorter = null;
     	}
     	
-        $paginator = $categoryManager->createPaginator($catalog, $category, $delegatingSorter);
+        $paginator = $categoryManager->createPaginator($catalog, $category, $sorter);
         
         $paginator->setCurrentPage($this->container->get('request')->query->get('page', 1), true, true);
         $items = $paginator->getCurrentPageResults();
@@ -65,7 +65,11 @@ class CategoryController extends ContainerAware
     {
         $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
         
-    	$categories = $this->container->get('sylius_catalog.manager.category')->findCategories($catalog);
+         if ($catalog->getOption('nested')) {
+    	    $categories = $this->container->get('sylius_catalog.manager.category')->findCategories($catalog, true);
+        } else {
+            $categories = $this->container->get('sylius_catalog.manager.category')->findCategories($catalog);
+        }
     	
         return $this->container->get('templating')->renderResponse($catalog->getOption('templates.frontend.list'), array(
             'catalog'	 => $catalog,

@@ -64,7 +64,7 @@ interface CategoryManagerInterface
      * @param CatalogInterface $catalog
      * @return array
      */
-    function findCategories(CatalogInterface $catalog);
+    function findCategories(CatalogInterface $catalog, $asTree = false);
     
     /**
      * Finds categories by criteria.

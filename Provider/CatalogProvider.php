@@ -11,6 +11,8 @@
 
 namespace Sylius\Bundle\CatalogBundle\Provider;
 
+use Sylius\Bundle\CatalogBundle\Model\CategoryManagerInterface;
+
 /**
  * Catalog configuration provider.
  *
@@ -20,11 +22,13 @@ class CatalogProvider
 {
     protected $class;
     protected $catalogs;
+    protected $categoryManager;
     
-    public function __construct($class, array $catalogs)
+    public function __construct($class, array $catalogs, CategoryManagerInterface $categoryManager)
     {
         $this->class = $class;
         $this->catalogs = $catalogs;
+        $this->categoryManager = $categoryManager;
     }
     
     /**
@@ -36,7 +40,7 @@ class CatalogProvider
     {
         if ($this->hasCatalog($alias)) {
             $class = $this->class;
-            return new $class($alias, $this->catalogs[$alias]);
+            return new $class($alias, $this->catalogs[$alias], $this->categoryManager);
         }
         
         throw new \InvalidArgumentException(sprintf('Catalog with alias "%s" does not exist.', $alias));

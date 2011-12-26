@@ -21,4 +21,6 @@ final class SyliusCatalogEvents
     const CATEGORY_CREATE = 'sylius_catalog.event.category.create';
     const CATEGORY_UPDATE = 'sylius_catalog.event.category.update';
     const CATEGORY_DELETE = 'sylius_catalog.event.category.delete';
+    const CATEGORY_MOVE_UP = 'sylius_catalog.event.category.moveUp';
+    const CATEGORY_MOVE_DOWN = 'sylius_catalog.event.category.moveDown';
 }

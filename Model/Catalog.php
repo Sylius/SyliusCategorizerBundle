@@ -30,15 +30,38 @@ class Catalog implements CatalogInterface
      */
     protected $options;
     
-    public function __construct($alias, array $options)
+    protected $categoryManager;
+    
+    public function __construct($alias, array $options, CategoryManagerInterface $categoryManager)
     {
         $this->alias = $alias;
         $this->options = $options;
+        $this->categoryManager = $categoryManager;
     }
     
     public function getAlias()
     {
         return $this->alias;
+    }
+    
+    public function findCategory($id)
+    {
+        return $this->categoryManager->findCategory($this, $id);
+    }
+    
+    public function findCategoryBy(array $criteria)
+    {
+        return $this->categoryManager->findCategoryBy($this, $criteria);
+    }
+    
+    public function findCategories()
+    {
+        return $this->categoryManager->findCategories($this);
+    }
+    
+    public function findCategoriesBy(array $criteria)
+    {
+        return $this->categoryManager->findCategoriesBy($this, $criteria);
     }
     
     public function getOptions()

@@ -2,14 +2,15 @@
 
 namespace Sylius\Bundle\CatalogBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sylius\Bundle\CatalogBundle\Entity\Category as BaseCategory;
 
 class NestedCategory extends BaseCategory
 {
-    protected $treeLeft;
-    protected $treeLevel;
-    protected $treeRight;
-    protected $treeRoot;
+    public $treeLeft;
+    public $treeLevel;
+    public $treeRight;
+    public $treeRoot;
     protected $parent;
     protected $children;
     
@@ -28,8 +29,13 @@ class NestedCategory extends BaseCategory
         return $this->children;
     }
     
-    public function setChildren($children)
+    public function setChildren(ArrayCollection $children)
     {
         $this->children = $children;
+    }
+    
+    public function hasChildren()
+    {
+        return !$this->children->isEmpty();
     }
 }

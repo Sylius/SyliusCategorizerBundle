@@ -23,6 +23,7 @@
         <service id="sylius_catalog.provider" class="%sylius_catalog.provider.class%">
         	<argument>%sylius_catalog.model.catalog.class%</argument>
         	<argument>%sylius_catalog.catalogs%</argument>
+        	<argument type="service" id="sylius_catalog.manager.category" />
         </service>
     </services>
 

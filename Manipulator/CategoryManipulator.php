@@ -11,6 +11,8 @@
 
 namespace Sylius\Bundle\CatalogBundle\Manipulator;
 
+use Sylius\Bundle\CatalogBundle\Model\CatalogInterface;
+
 use Sylius\Bundle\CatalogBundle\Model\CategoryManagerInterface;
 use Sylius\Bundle\CatalogBundle\Model\CategoryInterface;
 use Sylius\Bundle\CatalogBundle\Inflector\SlugizerInterface;
@@ -76,5 +78,15 @@ class CategoryManipulator implements CategoryManipulatorInterface
     public function delete(CategoryInterface $category)
     {        
         $this->categoryManager->removeCategory($category);
+    }
+    
+    public function moveUp(CatalogInterface $catalog, CategoryInterface $category)
+    {
+        $this->categoryManager->moveCategoryUp($catalog, $category);
+    }
+    
+    public function moveDown(CatalogInterface $catalog, CategoryInterface $category)
+    {
+        $this->categoryManager->moveCategoryDown($catalog, $category);
     }
 }

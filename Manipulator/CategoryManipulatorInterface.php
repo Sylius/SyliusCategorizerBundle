@@ -11,6 +11,8 @@
 
 namespace Sylius\Bundle\CatalogBundle\Manipulator;
 
+use Sylius\Bundle\CatalogBundle\Model\CatalogInterface;
+
 use Sylius\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
@@ -39,5 +41,9 @@ interface CategoryManipulatorInterface
      * 
      * @param CategoryInterface $category
      */
-    function delete(CategoryInterface $category);  
+    function delete(CategoryInterface $category); 
+    
+    function moveUp(CatalogInterface $catalog, CategoryInterface $category);
+    
+    function moveDown(CatalogInterface $catalog, CategoryInterface $category);
 }

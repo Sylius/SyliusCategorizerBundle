@@ -33,7 +33,11 @@ class CategoryController extends ContainerAware
     {
         $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
         
-    	$categories = $this->container->get('sylius_catalog.manager.category')->findCategories($catalog);
+        if ($catalog->getOption('nested')) {
+    	    $categories = $this->container->get('sylius_catalog.manager.category')->findCategories($catalog, true);
+        } else {
+            $categories = $this->container->get('sylius_catalog.manager.category')->findCategories($catalog);
+        }
     	
         return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.list'), array(
             'catalog' => $catalog,
@@ -57,12 +61,12 @@ class CategoryController extends ContainerAware
     	}
     	
         if ($catalog->getOption('sorter', false)) {
-    	    $delegatingSorter = $this->container->get($catalog->getOption('sorter'));
+    	    $sorter = $this->container->get($catalog->getOption('sorter'));
     	} else { 
-    	    $delegatingSorter = null;
+    	    $sorter = null;
     	}
     	
-        $paginator = $categoryManager->createPaginator($catalog, $category, $delegatingSorter);
+        $paginator = $categoryManager->createPaginator($catalog, $category, $sorter);
         $paginator->setCurrentPage($this->container->get('request')->query->get('page', 1), true, true);
         
         $items = $paginator->getCurrentPageResults();
@@ -164,6 +168,42 @@ class CategoryController extends ContainerAware
         
         return new RedirectResponse($this->container->get('router')->generate('sylius_catalog_backend_category_list', array(
             'catalogAlias' => $catalog->getAlias()
+        )));
+    }
+    
+    public function moveUpAction($catalogAlias, $id)
+    {
+        $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
+        
+        $category = $this->container->get('sylius_catalog.manager.category')->findCategory($catalog, $id);
+        
+        if (!$category) {
+            throw new NotFoundHttpException('Requested category does not exist.');
+        }
+        
+        $this->container->get('event_dispatcher')->dispatch(SyliusCatalogEvents::CATEGORY_MOVE_UP, new FilterCategoryEvent($category));
+        $this->container->get('sylius_catalog.manipulator.category')->moveUp($catalog, $category);
+        
+        return new RedirectResponse($this->container->get('router')->generate('sylius_catalog_backend_category_list', array(
+                    'catalogAlias' => $catalog->getAlias()
+        )));
+    }
+    
+    public function moveDownAction($catalogAlias, $id)
+    {
+        $catalog = $this->container->get('sylius_catalog.provider')->getCatalog($catalogAlias);
+        
+        $category = $this->container->get('sylius_catalog.manager.category')->findCategory($catalog, $id);
+        
+        if (!$category) {
+            throw new NotFoundHttpException('Requested category does not exist.');
+        }
+        
+        $this->container->get('event_dispatcher')->dispatch(SyliusCatalogEvents::CATEGORY_MOVE_DOWN, new FilterCategoryEvent($category));
+        $this->container->get('sylius_catalog.manipulator.category')->moveDown($catalog, $category);
+        
+        return new RedirectResponse($this->container->get('router')->generate('sylius_catalog_backend_category_list', array(
+                    'catalogAlias' => $catalog->getAlias()
         )));
     }
 }

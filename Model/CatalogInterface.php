@@ -19,6 +19,10 @@ namespace Sylius\Bundle\CatalogBundle\Model;
 interface CatalogInterface
 {
     function getAlias();
+    function findCategory($id);
+    function findCategoryBy(array $criteria);
+    function findCategories();
+    function findCategoriesBy(array $criteria);
     function getOptions();
     function setOptions(array $options);
     function getOption($key);

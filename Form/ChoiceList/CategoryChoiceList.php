@@ -11,6 +11,8 @@
 
 namespace Sylius\Bundle\CatalogBundle\Form\ChoiceList;
 
+use Sylius\Bundle\CatalogBundle\Model\CategoryInterface;
+
 use Sylius\Bundle\CatalogBundle\Model\CatalogInterface;
 use Sylius\Bundle\CatalogBundle\Model\CategoryManagerInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
@@ -67,10 +69,29 @@ class CategoryChoiceList extends ArrayChoiceList
         
         $this->choices = array();
         
-        foreach ($this->categoryManager->findCategories($this->catalog) as $category) {
-            $this->choices[$category->getId()] = $category->getName();
+        if ($this->catalog->getOption('nested')) {
+            foreach ($this->categoryManager->findCategories($this->catalog, true) as $category) {
+                $this->choices[$category->getId()] = $category->getName();
+                if ($category->hasChildren()) {
+                    $this->generateNestedChoices($category);
+                }
+            }
+        } else {
+            foreach ($this->categoryManager->findCategories($this->catalog) as $category) {
+                $this->choices[$category->getId()] = $category->getName();
+            }
         }
         
         return parent::getChoices();
+    }
+    
+    private function generateNestedChoices(CategoryInterface $category)
+    {
+        if ($category->hasChildren()) {
+            foreach ($category->getChildren() as $category) {
+                $this->choices[$category->getId()] = str_repeat("—", $category->treeLevel * 2) . ' - ' . $category->getName();
+                $this->generateNestedChoices($category);
+            }
+        }
     }
 }
