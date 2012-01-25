@@ -13,8 +13,9 @@ namespace Sylius\Bundle\CatalogBundle\Inflector;
 
 /**
  * Slugizer.
- * 
+ *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
+ * @author Саша Стаменковић <umpirsky@gmail.com>
  */
 class Slugizer implements SlugizerInterface
 {
@@ -23,6 +24,6 @@ class Slugizer implements SlugizerInterface
      */
     public function slugize($string)
     {
-        return preg_replace('/[^a-z0-9_\s-]/', '', preg_replace("/[\s_]/", "-", preg_replace('!\s+!', ' ', strtolower(trim($string)))));
+        return preg_replace('/[^a-z0-9_\s-]/', '', preg_replace("/[\s_]/", "-", preg_replace('!\s+!', ' ', strtolower(trim(iconv('UTF-8', 'ASCII//TRANSLIT', $string))))));
     }
 }
