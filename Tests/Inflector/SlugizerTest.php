@@ -13,16 +13,32 @@ namespace Sylius\Bundle\CatalogBundle\Tests\Inflector;
 
 use Sylius\Bundle\CatalogBundle\Inflector\Slugizer;
 
+/**
+ * SlugizerTest.
+ *
+ * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
+ * @author Саша Стаменковић <umpirsky@gmail.com>
+ */
 class SlugizerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSlugize()
+    /**
+     * @dataProvider testSlugizeProvider
+     *
+     * @param string $string original string
+     * @param string $slug expected slugized string
+     */
+    public function testSlugize($string, $slug)
     {
         $slugizer = new Slugizer();
-        $string = '#example String!!!,,,...';
-        $slugizedString = 'example-string';
-        $this->assertEquals($slugizer->slugize($string), $slugizedString);
-        $string = 'example string          test';
-        $slugizedString = 'example-string-test';
-        $this->assertEquals($slugizer->slugize($string), $slugizedString);
+        $this->assertEquals($slugizer->slugize($string), $slug);
+    }
+
+    public function testSlugizeProvider()
+    {
+        return array(
+            array('#example String!!!,,,...', 'example-string'),
+            array('example string          test', 'example-string-test'),
+            array('vrući-ćevapčići', 'vruci-cevapcici')
+        );
     }
 }
