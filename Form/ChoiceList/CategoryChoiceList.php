@@ -15,49 +15,49 @@ use Sylius\Bundle\CatalogBundle\Model\CategoryInterface;
 
 use Sylius\Bundle\CatalogBundle\Model\CatalogInterface;
 use Sylius\Bundle\CatalogBundle\Model\CategoryManagerInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 
 /**
  * Category choice list.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
-class CategoryChoiceList extends ArrayChoiceList
+class CategoryChoiceList extends ChoiceList
 {
     /**
      * Category manager.
-     * 
+     *
      * @var CategoryManagerInterface
      */
     protected $categoryManager;
-    
+
     /**
      * Catalog.
-     * 
+     *
      * @var CatalogInterface
      */
     protected $catalog;
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param $categoryManager
      */
     public function __construct(CategoryManagerInterface $categoryManager)
     {
         $this->categoryManager = $categoryManager;
     }
-    
+
     /**
      * Defines from which catalog load categories.
-     * 
+     *
      * @param CatalogInterface $catalog
      */
     public function defineCatalog(CatalogInterface $catalog)
     {
         $this->catalog = $catalog;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -66,9 +66,9 @@ class CategoryChoiceList extends ArrayChoiceList
         if (null == $this->catalog) {
             throw new \RuntimeException('Catalog must be defined to load categories.');
         }
-        
+
         $this->choices = array();
-        
+
         if ($this->catalog->getOption('nested')) {
             foreach ($this->categoryManager->findCategories($this->catalog, true) as $category) {
                 $this->choices[$category->getId()] = $category->getName();
@@ -81,10 +81,10 @@ class CategoryChoiceList extends ArrayChoiceList
                 $this->choices[$category->getId()] = $category->getName();
             }
         }
-        
+
         return parent::getChoices();
     }
-    
+
     private function generateNestedChoices(CategoryInterface $category)
     {
         if ($category->hasChildren()) {
