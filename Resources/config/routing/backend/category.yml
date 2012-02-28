@@ -1,0 +1,30 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+sylius_categorizer_backend_category_create:
+    pattern: /{alias}/categories/create
+    defaults: { _controller: sylius_categorizer.controller.backend.category:createAction }
+
+sylius_categorizer_backend_category_update:
+    pattern: /{alias}/categories/{id}/update
+    defaults: { _controller: sylius_categorizer.controller.backend.category:updateAction }
+
+sylius_categorizer_backend_category_delete:
+    pattern: /{alias}/categories/{id}/delete
+    defaults: { _controller: sylius_categorizer.controller.backend.category:deleteAction }
+
+sylius_categorizer_backend_category_move_up:
+    pattern: /{alias}/categories/{id}/move-up
+    defaults: { _controller: sylius_categorizer.controller.backend.category:moveUpAction }
+
+sylius_categorizer_backend_category_move_down:
+    pattern: /{alias}/categories/{id}/move-down
+    defaults: { _controller: sylius_categorizer.controller.backend.category:moveDownAction }
+
+sylius_categorizer_backend_category_list:
+    pattern: /{alias}/categories/list
+    defaults: { _controller: sylius_categorizer.controller.backend.category:listAction }
+
+sylius_categorizer_backend_category_show:
+    pattern: /{alias}/categories/{id}
+    defaults: { _controller: sylius_categorizer.controller.backend.category:showAction }

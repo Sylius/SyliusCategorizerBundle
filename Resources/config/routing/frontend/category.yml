@@ -1,0 +1,10 @@
+# This file is part of the Sylius package.
+# (c) Paweł Jędrzejewski
+
+sylius_categorizer_category_show:
+    pattern: /{alias}/categories/{id}/{slug}
+    defaults: { _controller: sylius_categorizer.controller.frontend.category:showAction }
+
+sylius_categorizer_category_list:
+    pattern: /{alias}/categories/list
+    defaults: { _controller: sylius_categorizer.controller.frontend.category:listAction }

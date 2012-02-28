@@ -1,0 +1,8 @@
+phpunit.xml
+Tests/autoload.php
+
+vendor/
+
+composer.phar
+composer.lock
+
