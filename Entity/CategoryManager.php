@@ -269,8 +269,10 @@ class CategoryManager extends BaseCategoryManager
     protected function isNested($guessable)
     {
         $catalog = $this->catalogRegistry->guessCatalog($guessable);
+        $class = $catalog->getOption('classes.model');
+        $reflection = new \ReflectionClass($class);
 
-        return false;
+        return $reflection->isSubclassOf('Sylius\Bundle\CategorizerBundle\Entity\NestedCategory');
     }
 
     /**
