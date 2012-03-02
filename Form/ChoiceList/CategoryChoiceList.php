@@ -40,7 +40,7 @@ class CategoryChoiceList extends ObjectChoiceList
     {
         $this->categoryManager = $categoryManager;
 
-        parent::__construct(array(), 'name', array(), null, null, 'id');
+        parent::__construct(array(), 'name', array(), '__children', null, 'id');
     }
 
     /**
@@ -50,6 +50,6 @@ class CategoryChoiceList extends ObjectChoiceList
      */
     public function initializeCatalog(CatalogInterface $catalog)
     {
-        $this->initialize($this->categoryManager->findCategories($catalog), array(), array());
+        $this->initialize($this->categoryManager->generateChoices($catalog), array(), array());
     }
 }

@@ -108,6 +108,15 @@ class CategoryManager extends BaseCategoryManager
         return new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
     }
 
+    public function generateChoices($catalog)
+    {
+        return $this->getRepository($catalog)->createQueryBuilder('c')
+            ->orderBy('c.position')
+            ->getQuery()
+            ->execute()
+        ;
+    }
+
     /**
      * Persists category.
      * Updates position if new category.

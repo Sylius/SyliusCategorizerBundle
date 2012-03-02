@@ -35,6 +35,13 @@ interface CategoryManagerInterface
     function createPaginator(CategoryInterface $category, \Closure $callback = null);
 
     /**
+     * Generates proper choice list for forms.
+     *
+     * @param string|CatalogInterface $catalog
+     */
+    function generateChoices($catalog);
+
+    /**
      * Persist category.
      *
      * @param CategoryInterface
