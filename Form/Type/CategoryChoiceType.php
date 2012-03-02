@@ -63,7 +63,7 @@ class CategoryChoiceType extends AbstractType
 
         $this->categoryChoiceList->initializeCatalog($this->catalogRegistry->getCatalog($options['catalog']));
 
-        if (in_array($this->driver, array('doctrine/orm', 'doctrine/mongodb-odm', 'doctrine/couchdb-odm'))) {
+        if ($options['multiple'] && in_array($this->driver, array('doctrine/orm', 'doctrine/mongodb-odm', 'doctrine/couchdb-odm'))) {
             $builder->prependClientTransformer(new CollectionToArrayTransformer());
         }
     }
