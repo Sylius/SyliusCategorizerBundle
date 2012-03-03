@@ -41,7 +41,7 @@ class CategoryController extends ContainerAware
         );
 
         if ($catalog->getOption('pagination')) {
-            $paginator = $this->container->get('sylius_categorizer.manager.category')->createPaginator($category, $catalog);
+            $paginator = $this->container->get('sylius_categorizer.manager.category')->createPaginator($category);
             $paginator->setCurrentPage($this->container->get('request')->query->get('page', 1), true, true);
             $paginator->setMaxPerPage($catalog->getOption('pagination.mpp'));
 
