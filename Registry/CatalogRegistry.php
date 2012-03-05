@@ -27,7 +27,6 @@ class CatalogRegistry
     public function __construct(array $configuration)
     {
         $this->configuration = $configuration;
-
         $this->catalogs = array();
     }
 
@@ -96,7 +95,7 @@ class CatalogRegistry
         }
 
         foreach ($this->configuration as $alias => $cfg) {
-            if ($class === $cfg['classes.model']) {
+            if ($class === $cfg['model']) {
 
                 return $this->getCatalog($alias);
             }

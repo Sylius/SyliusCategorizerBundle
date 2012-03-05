@@ -53,14 +53,12 @@ class SyliusCategorizerExtension extends Extension
         foreach($config['catalogs'] as $alias => $catalog) {
             $remappedCatalogConfiguration = array(
                 'alias'          => $alias,
+                'model'          => $catalog['model'],
                 'form'           => $catalog['form'],
                 'property'       => $catalog['property'],
                 'pagination'     => !$catalog['pagination']['disable'],
                 'pagination.mpp' => $catalog['pagination']['mpp']
             );
-            foreach ($catalog['classes'] as $key => $value) {
-                $remappedCatalogConfiguration[sprintf('classes.%s', $key)] = $value;
-            }
             foreach ($catalog['templates']['backend'] as $key => $value) {
                 $remappedCatalogConfiguration[sprintf('templates.backend.%s', $key)] = $value;
             }
