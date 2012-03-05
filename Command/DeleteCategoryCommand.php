@@ -22,13 +22,14 @@ use Symfony\Component\Console\Output\Output;
 
 /**
  * Command for console that deletes category.
+ * Takes catalog alias and category id as arguments.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
 class DeleteCategoryCommand extends ContainerAwareCommand
 {
     /**
-     * @see Symfony\Component\Console\Command.Command::configure()
+     * @see Command
      */
     protected function configure()
     {
@@ -45,11 +46,12 @@ The <info>sylius:categorizer:category:delete</info> command deletes a category:
 
   <info>php sylius/console sylius:categorizer:category:delete blog 24</info>
 EOT
-            );
+            )
+        ;
     }
 
     /**
-     * @see Symfony\Component\Console\Command.Command::execute()
+     * @see Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -75,7 +77,7 @@ EOT
     }
 
     /**
-     * @see Symfony\Component\Console\Command.Command::interact()
+     * @see Command
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
