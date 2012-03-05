@@ -32,13 +32,6 @@ class CategoryChoiceType extends AbstractType
     protected $catalogRegistry;
 
     /**
-     * Bundle driver.
-     *
-     * @var string
-     */
-    protected $driver;
-
-    /**
      * Category choice list.
      *
      * @var CategoryChoiceList
@@ -46,13 +39,24 @@ class CategoryChoiceType extends AbstractType
     protected $categoryChoiceList;
 
     /**
-     * Constructor.
+     * Bundle driver.
+     *
+     * @var string
      */
-    public function __construct(CatalogRegistry $catalogRegistry,  $driver, CategoryChoiceList $categoryChoiceList)
+    protected $driver;
+
+    /**
+     * Constructor.
+     *
+     * @param CatalogRegistry    $catalogRegistry
+     * @param CategoryChoiceList $categoryChoiceList
+     * @param string             $driver
+     */
+    public function __construct(CatalogRegistry $catalogRegistry, CategoryChoiceList $categoryChoiceList, $driver)
     {
         $this->catalogRegistry = $catalogRegistry;
-        $this->driver = $driver;
         $this->categoryChoiceList = $categoryChoiceList;
+        $this->driver = $driver;
     }
 
     public function buildForm(FormBuilder $builder, array $options)
