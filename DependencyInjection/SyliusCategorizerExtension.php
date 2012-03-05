@@ -53,10 +53,10 @@ class SyliusCategorizerExtension extends Extension
         foreach($config['catalogs'] as $alias => $catalog) {
             $remappedCatalogConfiguration = array(
                 'alias'          => $alias,
-                'pagination'     => !$catalog['pagination']['disable'],
-                'pagination.mpp' => $catalog['pagination']['mpp'],
                 'form'           => $catalog['form'],
-                'property'       => $catalog['property']
+                'property'       => $catalog['property'],
+                'pagination'     => !$catalog['pagination']['disable'],
+                'pagination.mpp' => $catalog['pagination']['mpp']
             );
             foreach ($catalog['classes'] as $key => $value) {
                 $remappedCatalogConfiguration[sprintf('classes.%s', $key)] = $value;
@@ -75,10 +75,10 @@ class SyliusCategorizerExtension extends Extension
 
         $configurations = array(
             'controllers',
-            'registry',
             'forms',
             'inflectors',
             'manipulators',
+            'registry'
         );
 
         foreach($configurations as $basename) {
@@ -86,9 +86,9 @@ class SyliusCategorizerExtension extends Extension
         }
 
         $this->remapParametersNamespaces($config['classes'], $container, array(
-            'model'       => 'sylius_categorizer.model.%s.class',
-            'inflector'   => 'sylius_categorizer.inflector.%s.class',
             'manipulator' => 'sylius_categorizer.manipulator.%s.class',
+            'model'       => 'sylius_categorizer.model.%s.class',
+            'inflector'   => 'sylius_categorizer.inflector.%s.class'
         ));
 
         $this->remapParametersNamespaces($config['classes']['controller'], $container, array(
@@ -98,11 +98,11 @@ class SyliusCategorizerExtension extends Extension
     }
 
     /**
-     * Remap parameters.
+     * Remaps parameters.
      *
-     * @param $config
+     * @param array            $config
      * @param ContainerBuilder $container
-     * @param $map
+     * @param array            $map
      */
     protected function remapParameters(array $config, ContainerBuilder $container, array $map)
     {
@@ -114,11 +114,11 @@ class SyliusCategorizerExtension extends Extension
     }
 
     /**
-     * Remap parameter namespaces.
+     * Remaps parameter namespaces.
      *
-     * @param $config
+     * @param array            $config
      * @param ContainerBuilder $container
-     * @param $map
+     * @param array            $map
      */
     protected function remapParametersNamespaces(array $config, ContainerBuilder $container, array $namespaces)
     {

@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Category backend controller.
- * Manages all actions related to category model.
+ * Manages all backend actions related to categories.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
@@ -78,7 +78,7 @@ class CategoryController extends ContainerAware
     /**
      * Creates new category in given catalog.
      *
-     * @param string $alias
+     * @param string $alias The key to identify catalog
      */
     public function createAction(Request $request, $alias)
     {
@@ -109,8 +109,8 @@ class CategoryController extends ContainerAware
     /**
      * Updates a category from given catalog.
      *
-     * @param string  $alias
-     * @param integer $id
+     * @param string  $alias The key to identify catalog
+     * @param integer $id    Category id
      */
     public function updateAction(Request $request, $alias, $id)
     {
@@ -207,7 +207,7 @@ class CategoryController extends ContainerAware
      */
     protected function findCategoryOr404(CatalogInterface $catalog, $id)
     {
-        if (!$category = $category = $this->container->get('sylius_categorizer.manager.category')->findCategory($id, $catalog)) {
+        if (!$category = $this->container->get('sylius_categorizer.manager.category')->findCategory($id, $catalog)) {
             throw new NotFoundHttpException('Requested category does not exist.');
         }
 
