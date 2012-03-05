@@ -167,7 +167,7 @@ class CategoryManager extends BaseCategoryManager
 
     /**
      * Finds all categories from catalog.
-     * Returns nested array for nested categories.
+     * Returns nested array for nested categories with special `__children` key.
      *
      * @param string|CatalogInterface The key to identify catalog or catalog object
      */
@@ -239,6 +239,12 @@ class CategoryManager extends BaseCategoryManager
         $this->entityManager->flush();
     }
 
+    /**
+     * If category is not handled by Doctrine extensions
+     * we handle positions manually.
+     *
+     * @param CategoryInterface $category
+     */
     protected function refreshCategoryPosition(CategoryInterface $category)
     {
         if (!$this->isNested($category)) {
@@ -259,6 +265,11 @@ class CategoryManager extends BaseCategoryManager
         }
     }
 
+    /**
+     * Returns max position for specific catalog.
+     *
+     * @param CategoryInterface $category
+     */
     protected function getMaxPosition(CategoryInterface $category)
     {
         $repository = $this->getRepository($this->catalogRegistry->guessCatalog($category));
