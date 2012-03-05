@@ -89,8 +89,7 @@ driver: doctrine/orm
 catalogs:
     testing:
         property: tests
-        classes:
-            model: Sylius\Bundle\CategorizerBundle\Entity\DefaultCategory
+        model: Sylius\Bundle\CategorizerBundle\Entity\DefaultCategory
 EOF;
         $parser = new Parser();
 
