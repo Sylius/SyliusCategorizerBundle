@@ -102,5 +102,5 @@ License can be found [here](https://github.com/Sylius/SyliusCategorizerBundle/bl
 Authors.
 --------
 
-The bundle was originally created by [Paweł Jędrzejewski](http://diweb.pl).
+The bundle was originally created by [Paweł Jędrzejewski](http://pjedrzejewski.com).
 See the list of [contributors](https://github.com/Sylius/SyliusCategorizerBundle/contributors).
