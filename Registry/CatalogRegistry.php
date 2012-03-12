@@ -61,6 +61,8 @@ class CatalogRegistry
         }
 
         $this->catalogs[$alias] = $catalog;
+        //need to set when we want to pass hasCatalog check
+        $this->configuration[$alias] = array();
     }
 
     /**

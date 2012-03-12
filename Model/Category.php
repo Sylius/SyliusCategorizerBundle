@@ -63,6 +63,8 @@ abstract class Category implements CategoryInterface
     public function __construct()
     {
         $this->position = 0;
+        $this->createdAt = new \DateTime;
+        $this->updatedAt = new \DateTime;
     }
 
     public function getId()
@@ -127,6 +129,6 @@ abstract class Category implements CategoryInterface
 
     public function incrementUpdatedAt()
     {
-        $this->updatedAt = new \DateTime();
+        $this->updatedAt = new \DateTime;
     }
 }

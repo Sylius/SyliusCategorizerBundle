@@ -130,6 +130,32 @@ class CategoryManipulatorTest extends \PHPUnit_Framework_TestCase
         $manipulator->delete($category);
     }
 
+    public function testMoveUp()
+    {
+        $category = $this->getMockCategory();
+
+        $categoryManager = $this->getMockCategoryManager();
+        $categoryManager->expects($this->once())
+            ->method('moveCategoryUp')
+            ->with($this->equalTo($category));
+
+        $manipulator = new CategoryManipulator($categoryManager, $this->getMockSlugizer());
+        $manipulator->moveUp($category);
+    }
+
+    public function testMoveDown()
+    {
+        $category = $this->getMockCategory();
+
+        $categoryManager = $this->getMockCategoryManager();
+        $categoryManager->expects($this->once())
+            ->method('moveCategoryDown')
+            ->with($this->equalTo($category));
+
+        $manipulator = new CategoryManipulator($categoryManager, $this->getMockSlugizer());
+        $manipulator->moveDown($category);
+    }
+
     private function getMockCategory()
     {
         return $this->getMock('Sylius\Bundle\CategorizerBundle\Model\CategoryInterface');
