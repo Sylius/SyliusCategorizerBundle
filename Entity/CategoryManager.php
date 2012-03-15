@@ -87,7 +87,7 @@ class CategoryManager extends BaseCategoryManager
         $alias = $property[0];
 
         if (ClassMetadataInfo::ONE_TO_MANY === $itemAssociationMapping['type']) {
-        $queryBuilder = $this->entityManager->createQueryBuilder()
+            $queryBuilder = $this->entityManager->createQueryBuilder()
                 ->select($alias)
                 ->from($itemClass, $alias)
                 ->where($alias.'.category = ?1')
