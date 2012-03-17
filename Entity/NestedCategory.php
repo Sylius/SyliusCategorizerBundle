@@ -11,7 +11,9 @@
 
 namespace Sylius\Bundle\CategorizerBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Collection,
+    Doctrine\Common\Collections\ArrayCollection;
+
 use Sylius\Bundle\CategorizerBundle\Entity\Category as BaseCategory;
 
 /**
@@ -28,6 +30,13 @@ class NestedCategory extends BaseCategory
     public $treeRoot;
     protected $parent;
     protected $children;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->children = new ArrayCollection();
+    }
 
     public function getParent()
     {
