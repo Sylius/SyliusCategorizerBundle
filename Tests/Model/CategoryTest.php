@@ -100,8 +100,20 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan($updatedAt, $category->getUpdatedAt());
     }
 
+    public function testGetId()
+    {
+        $category = new EvilStubCategory();
+
+        $this->assertEquals(666, $category->getId());
+    }
+
     protected function getCategory()
     {
         return $this->getMockForAbstractClass('Sylius\Bundle\CategorizerBundle\Model\Category');
     }
+}
+
+class EvilStubCategory extends \Sylius\Bundle\CategorizerBundle\Model\Category
+{
+    public $id = 666;
 }
