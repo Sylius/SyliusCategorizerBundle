@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('sylius_catalog');
+        $rootNode = $treeBuilder->root('sylius_categorizer');
 
         $rootNode
             ->addDefaultsIfNotSet()
