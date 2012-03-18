@@ -87,7 +87,7 @@ class CategoryManager extends BaseCategoryManager
         $alias = $property[0];
 
         if (ClassMetadataInfo::ONE_TO_MANY === $itemAssociationMapping['type']) {
-        $queryBuilder = $this->entityManager->createQueryBuilder()
+            $queryBuilder = $this->entityManager->createQueryBuilder()
                 ->select($alias)
                 ->from($itemClass, $alias)
                 ->where($alias.'.category = ?1')
@@ -173,8 +173,7 @@ class CategoryManager extends BaseCategoryManager
      */
     public function findCategories($catalog)
     {
-        if ($this->isNested($this->catalogRegistry->guessCatalog($catalog))) {
-
+        if ($this->isNested($catalog)) {
             return $this->getRepository($catalog)->childrenHierarchy();
         }
 
@@ -307,8 +306,7 @@ class CategoryManager extends BaseCategoryManager
         $categoryClass = $catalog->getOption('model');
 
         if (!isset($this->repositories[$categoryClass])) {
-
-            return $this->repositories[$categoryClass] = $this->entityManager->getRepository($categoryClass);
+            $this->repositories[$categoryClass] = $this->entityManager->getRepository($categoryClass);
         }
 
         return $this->repositories[$categoryClass];
