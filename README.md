@@ -1,11 +1,21 @@
 SyliusCategorizerBundle
 =======================
 
-Categorizing whatever you want just got easier. You can use this bundle to create multiple categorized catalogs of any object.
-It provides all controllers, routing, base mapping and services that boost you development.
-No need to reimplement this feature every time you need it. Few lines of configuration, one almost empty class and we're ready to go!
+Categorizing whatever you want just got easier. Grouping products, posts or any other model is common feature in most of modern web applications.
+So why implement it every time you need it? You can use this bundle to create multiple categorized catalogs of any object.
+It provides all controllers, routing, base mapping and services that will boost you development.
 
-[![Build status...](https://secure.travis-ci.org/Sylius/SyliusCategorizerBundle.png)](http://travis-ci.org/Sylius/SyliusCategorizerBundle)
+Features
+--------
+
+* Base support for different many different persistence layers. Currently only Doctrine ORM driver is implemented.
+* Allows you to create custom ordered flat list of categories, default controllers and forms will handle CRUD and moving up/down the categories.
+* Thanks to [Doctrine Extensions library](http://github.com/l3pp4rd/DoctrineExtensions) you can have nested set of categories, just extend proper class, modify form, add little mapping and it works.
+* Handles both many-to-one and many-to-many relations between objects and the categories. Bundle will check it for you.
+* You can create as many catalogs as you want, by `catalog` we understand set of categories and the items, for example products or blog posts.
+* It uses [Pagerfanta](http://github.com/whiteoctober/Pagerfanta) to paginate over the category items, but you can easily disable the pagination for specific catalog.
+* Thanks to awesome [Symfony2](http://symfony.com) everything is configurable and extensible.
+* Unit tested. [![Build status...](https://secure.travis-ci.org/Sylius/SyliusCategorizerBundle.png)](http://travis-ci.org/Sylius/SyliusCategorizerBundle)
 
 Sylius
 ------
@@ -24,7 +34,7 @@ Before running tests, load the dependencies using [Composer](http://packagist.or
 
 ``` bash
 $ wget http://getcomposer.org/composer.phar
-$ php composer.phar install
+$ php composer.phar install --install-suggests
 ```
 
 Now you can run the tests by simply using this command.
@@ -42,12 +52,12 @@ It's open sourced github project.
 Documentation
 -------------
 
-Documentation is available on [Sylius.org](http://sylius.org/docs/bundles/SyliusCategorizerBundle.html).
+Documentation is available on [readthedocs.org](http://sylius.readthedocs.org/en/latest/bundles/SyliusCategorizerBundle.html).
 
 Contributing
 ------------
 
-All informations about contributing to Sylius can be found on [this page](http://sylius.org/docs/contributing/index.html).
+All informations about contributing to Sylius can be found on [this page](http://sylius.readthedocs.org/en/latest/contributing/index.html).
 
 Mailing lists
 -------------
