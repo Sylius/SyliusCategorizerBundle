@@ -138,9 +138,14 @@ class CategoryManager extends BaseCategoryManager
      */
     public function removeCategory(CategoryInterface $category)
     {
-        $this->entityManager->remove($category);
-        $this->refreshCategoryPosition($category);
-        $this->entityManager->flush();
+        if ($this->isNested($category)) {
+            $this->getRepository($category)->removeFromTree($category);
+            $this->entityManager->clear();
+        } else {
+            $this->entityManager->remove($category);
+            $this->refreshCategoryPosition($category);
+            $this->entityManager->flush();
+        }
     }
 
     /**
