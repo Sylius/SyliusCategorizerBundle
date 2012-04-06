@@ -5,6 +5,8 @@ Categorizing whatever you want just got easier. Grouping products, posts or any 
 So why implement it every time you need it? You can use this bundle to create multiple categorized catalogs of any object.
 It provides all controllers, routing, base mapping and services that will boost you development.
 
+**This bundle is compatible only with 2.1.x branch of Symfony2.**.
+
 Features
 --------
 
