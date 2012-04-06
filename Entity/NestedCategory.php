@@ -43,7 +43,7 @@ class NestedCategory extends BaseCategory
         return $this->parent;
     }
 
-    public function setParent(NestedCategory $parent)
+    public function setParent(NestedCategory $parent = null)
     {
         $this->parent = $parent;
     }
