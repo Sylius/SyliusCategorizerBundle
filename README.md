@@ -10,6 +10,8 @@ It provides all controllers, routing, base mapping and services that will boost 
 Features
 --------
 
+### Implemented
+
 * Base support for many different persistence layers. Currently only Doctrine ORM driver is implemented.
 * Allows you to create custom ordered flat list of categories, default controllers and forms will handle CRUD and moving up/down the categories.
 * Thanks to [Doctrine Extensions library](http://github.com/l3pp4rd/DoctrineExtensions) you can have nested set of categories, just extend proper class, modify form, add little mapping and it works.
@@ -18,6 +20,13 @@ Features
 * It uses [Pagerfanta](http://github.com/whiteoctober/Pagerfanta) to paginate over the category items, but you can easily disable the pagination for specific catalog.
 * Thanks to awesome [Symfony2](http://symfony.com) everything is configurable and extensible.
 * Unit tested. [![Build status...](https://secure.travis-ci.org/Sylius/SyliusCategorizerBundle.png)](http://travis-ci.org/Sylius/SyliusCategorizerBundle)
+
+### Planned or in progress
+
+* Doctrine MongoDB ODM driver. `*`
+* Counting items in category.
+
+`*` - wishlist, would love to see a contribution.
 
 Sylius
 ------
