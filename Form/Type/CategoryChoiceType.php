@@ -13,6 +13,7 @@ namespace Sylius\Bundle\CategorizerBundle\Form\Type;
 
 use Sylius\Bundle\CategorizerBundle\Form\ChoiceList\CategoryChoiceList;
 use Sylius\Bundle\CategorizerBundle\Registry\CatalogRegistry;
+use Sylius\Bundle\CategorizerBundle\SyliusCategorizerBundle;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
@@ -67,12 +68,21 @@ class CategoryChoiceType extends AbstractType
 
         $this->categoryChoiceList->initializeCatalog($this->catalogRegistry->getCatalog($options['catalog']));
 
-        if ($options['multiple'] && in_array($this->driver, array('doctrine/orm', 'doctrine/mongodb-odm', 'doctrine/couchdb-odm'))) {
+        $doctrineBasedDrivers = array(
+            SyliusCategorizerBundle::DRIVER_DOCTRINE_ORM,
+            SyliusCategorizerBundle::DRIVER_DOCTRINE_MONGODB_ODM,
+            SyliusCategorizerBundle::DRIVER_DOCTRINE_COUCHDB_ODM
+        );
+
+        if ($options['multiple'] && in_array($this->driver, $doctrineBasedDrivers)) {
             $builder->prependClientTransformer(new CollectionToArrayTransformer());
         }
     }
 
-    public function getDefaultOptions(array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultOptions()
     {
         return array(
             'catalog'     => null,
@@ -82,11 +92,17 @@ class CategoryChoiceType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent(array $options)
     {
         return 'choice';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'sylius_categorizer_category_choice';

@@ -21,12 +21,19 @@ use Symfony\Component\Form\AbstractType;
  */
 class CategoryType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         $builder
-            ->add('name', 'text');
+            ->add('name', 'text')
+        ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'sylius_categorizer_category';
