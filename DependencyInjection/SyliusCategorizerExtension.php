@@ -11,6 +11,7 @@
 
 namespace Sylius\Bundle\CategorizerBundle\DependencyInjection;
 
+use Sylius\Bundle\CategorizerBundle\SyliusCategorizerBundle;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -36,7 +37,7 @@ class SyliusCategorizerExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/container'));
 
-        if (!in_array($config['driver'], array('doctrine/orm'))) {
+        if (!in_array($config['driver'], SyliusCategorizerBundle::getSupportedDrivers())) {
             throw new \InvalidArgumentException(sprintf('Driver "%s" is unsupported for this extension.', $config['driver']));
         }
         if (!in_array($config['engine'], array('twig', 'php'))) {
