@@ -56,9 +56,16 @@ class CategoryManagerTest extends \PHPUnit_Framework_TestCase
             ->method('flush')
         ;
 
+        $catalog = $this->getMockCatalog();
+        $catalogRegistry = $this->getMockCatalogRegistry();
+        $catalogRegistry->expects($this->once())
+            ->method('guessCatalog')
+            ->will($this->returnValue($catalog))
+        ;
+
         $categoryManager = $this->getMockBuilder('Sylius\Bundle\CategorizerBundle\Entity\CategoryManager')
             ->setMethods(array('refreshCategoryPosition'))
-            ->setConstructorArgs(array($this->getMockCatalogRegistry(), $entityManager))
+            ->setConstructorArgs(array($catalogRegistry, $entityManager))
             ->getMock()
         ;
 
