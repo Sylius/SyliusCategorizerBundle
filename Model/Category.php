@@ -60,73 +60,137 @@ abstract class Category implements CategoryInterface
      */
     protected $updatedAt;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->position = 0;
-        $this->createdAt = new \DateTime;
-        $this->updatedAt = new \DateTime;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSlug()
     {
         return $this->slug;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setSlug($slug)
     {
         $this->slug = $slug;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPosition()
     {
         return $this->position;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setPosition($position)
     {
         $this->position = $position;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function incrementPosition()
     {
         $this->position++;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function decrementPosition()
     {
         $this->position--;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function incrementCreatedAt()
     {
         $this->createdAt = new \DateTime;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function incrementUpdatedAt()
     {
         $this->updatedAt = new \DateTime;
