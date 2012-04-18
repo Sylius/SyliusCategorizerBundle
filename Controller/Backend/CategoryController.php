@@ -85,8 +85,7 @@ class CategoryController extends ContainerAware
         $catalog = $this->container->get('sylius_categorizer.registry')->getCatalog($alias);
         $category = $this->container->get('sylius_categorizer.manager.category')->createCategory($catalog);
 
-        $form = $this->container->get('form.factory')->create($catalog->getOption('form'));
-        $form->setData($category);
+        $form = $this->container->get('form.factory')->create($catalog->getOption('form'), $category, array('catalog' => $alias));
 
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
@@ -117,8 +116,7 @@ class CategoryController extends ContainerAware
         $catalog = $this->container->get('sylius_categorizer.registry')->getCatalog($alias);
         $category = $this->findCategoryOr404($catalog, $id);
 
-        $form = $this->container->get('form.factory')->create($catalog->getOption('form'));
-        $form->setData($category);
+        $form = $this->container->get('form.factory')->create($catalog->getOption('form'), $category, array('catalog' => $alias));
 
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);

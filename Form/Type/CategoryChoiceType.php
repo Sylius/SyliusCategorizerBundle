@@ -60,6 +60,9 @@ class CategoryChoiceType extends AbstractType
         $this->driver = $driver;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilder $builder, array $options)
     {
         if (!isset($options['catalog'])) {
