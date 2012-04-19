@@ -19,10 +19,10 @@ Features
 * You can create as many catalogs as you want, by `catalog` we understand set of categories and the items, for example products or blog posts.
 * It uses [Pagerfanta](http://github.com/whiteoctober/Pagerfanta) to paginate over the category items, but you can easily disable the pagination for specific catalog.
 * Thanks to awesome [Symfony2](http://symfony.com) everything is configurable and extensible.
-* Unit tested. [![Build status...](https://secure.travis-ci.org/Sylius/SyliusCategorizerBundle.png)](http://travis-ci.org/Sylius/SyliusCategorizerBundle)
 
 ### Planned or in progress
 
+* More unit tests. [![Build status...](https://secure.travis-ci.org/Sylius/SyliusCategorizerBundle.png)](http://travis-ci.org/Sylius/SyliusCategorizerBundle)
 * Doctrine MongoDB ODM driver. `*`
 * Counting items in category.
 
