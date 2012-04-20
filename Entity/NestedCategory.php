@@ -11,9 +11,8 @@
 
 namespace Sylius\Bundle\CategorizerBundle\Entity;
 
-use Doctrine\Common\Collections\Collection,
-    Doctrine\Common\Collections\ArrayCollection;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Sylius\Bundle\CategorizerBundle\Entity\Category as BaseCategory;
 
 /**
@@ -53,13 +52,8 @@ class NestedCategory extends BaseCategory
         return $this->children;
     }
 
-    public function setChildren(Collection $children)
+    public function getLabel()
     {
-        $this->children = $children;
-    }
-
-    public function hasChildren()
-    {
-        return !$this->children->isEmpty();
+        return str_repeat('---', $this->treeLevel).' '.$this->name;
     }
 }

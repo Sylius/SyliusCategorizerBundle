@@ -151,6 +151,14 @@ abstract class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
+    public function getLabel()
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCreatedAt()
     {
         return $this->createdAt;

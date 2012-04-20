@@ -85,6 +85,13 @@ interface CategoryInterface
     function decrementPosition();
 
     /**
+     * Generates category label to display in choice lists.
+     *
+     * @return string
+     */
+    function getLabel();
+
+    /**
      * Get the creation time.
      *
      * @return DateTime

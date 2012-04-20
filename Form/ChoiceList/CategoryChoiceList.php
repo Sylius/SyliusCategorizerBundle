@@ -40,7 +40,7 @@ class CategoryChoiceList extends ObjectChoiceList
     {
         $this->categoryManager = $categoryManager;
 
-        parent::__construct(array(), 'name', array(), '__children', null, 'id');
+        parent::__construct(array(), 'label', array(), null, null, 'id');
     }
 
     /**
