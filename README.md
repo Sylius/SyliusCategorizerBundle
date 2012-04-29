@@ -25,6 +25,7 @@ Features
 * More unit tests. [![Build status...](https://secure.travis-ci.org/Sylius/SyliusCategorizerBundle.png)](http://travis-ci.org/Sylius/SyliusCategorizerBundle)
 * Doctrine MongoDB ODM driver. `*`
 * Counting items in category.
+* Item bubbling.
 
 `*` - wishlist, would love to see a contribution.
 
