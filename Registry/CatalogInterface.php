@@ -18,8 +18,20 @@ namespace Sylius\Bundle\CategorizerBundle\Registry;
  */
 interface CatalogInterface
 {
+    /**
+     * Get catalog alias.
+     *
+     * @return string
+     */
     function getAlias();
+
+    /**
+     * Set alias.
+     *
+     * @param string $alias
+     */
     function setAlias($alias);
+
     function getOptions();
     function setOptions(array $options);
     function getOption($key);

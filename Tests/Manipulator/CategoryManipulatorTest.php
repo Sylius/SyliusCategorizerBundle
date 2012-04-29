@@ -20,40 +20,6 @@ use Sylius\Bundle\CategorizerBundle\Manipulator\CategoryManipulator;
  */
 class CategoryManipulatorTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCreateSetsCategorySlug()
-    {
-        $slugizer = $this->getMockSlugizer();
-        $slugizer->expects($this->once())
-            ->method('slugize')
-            ->with($this->equalTo('foo bar'))
-            ->will($this->returnValue('foo-bar'))
-        ;
-
-        $category = $this->getMockCategory();
-        $category->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('foo bar'))
-        ;
-        $category->expects($this->once())
-            ->method('setSlug')
-            ->with($this->equalTo('foo-bar'))
-        ;
-
-        $manipulator = new CategoryManipulator($this->getMockCategoryManager(), $slugizer);
-        $manipulator->create($category);
-    }
-
-    public function testCreateIncrementsCategoryCreatedAt()
-    {
-        $category = $this->getMockCategory();
-        $category->expects($this->once())
-            ->method('incrementCreatedAt')
-        ;
-
-        $manipulator = new CategoryManipulator($this->getMockCategoryManager(), $this->getMockSlugizer());
-        $manipulator->create($category);
-    }
-
     public function testCreatePersistsCategory()
     {
         $category = $this->getMockCategory();
@@ -64,42 +30,8 @@ class CategoryManipulatorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($category))
         ;
 
-        $manipulator = new CategoryManipulator($categoryManager, $this->getMockSlugizer());
+        $manipulator = new CategoryManipulator($categoryManager);
         $manipulator->create($category);
-    }
-
-    public function testUpdateSetsCategorySlug()
-    {
-        $slugizer = $this->getMockSlugizer();
-        $slugizer->expects($this->once())
-            ->method('slugize')
-            ->with($this->equalTo('foo bar'))
-            ->will($this->returnValue('foo-bar'))
-        ;
-
-        $category = $this->getMockCategory();
-        $category->expects($this->once())
-            ->method('getName')
-            ->will($this->returnValue('foo bar'))
-        ;
-        $category->expects($this->once())
-            ->method('setSlug')
-            ->with($this->equalTo('foo-bar'))
-        ;
-
-        $manipulator = new CategoryManipulator($this->getMockCategoryManager(), $slugizer);
-        $manipulator->update($category);
-    }
-
-    public function testUpdateIncrementsCategoryUpdatedAt()
-    {
-        $category = $this->getMockCategory();
-        $category->expects($this->once())
-            ->method('incrementUpdatedAt')
-        ;
-
-        $manipulator = new CategoryManipulator($this->getMockCategoryManager(), $this->getMockSlugizer());
-        $manipulator->update($category);
     }
 
     public function testUpdatePersistsCategory()
@@ -112,7 +44,7 @@ class CategoryManipulatorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($category))
         ;
 
-        $manipulator = new CategoryManipulator($categoryManager, $this->getMockSlugizer());
+        $manipulator = new CategoryManipulator($categoryManager);
         $manipulator->update($category);
     }
 
@@ -126,7 +58,7 @@ class CategoryManipulatorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($category))
         ;
 
-        $manipulator = new CategoryManipulator($categoryManager, $slugizer = $this->getMockSlugizer());
+        $manipulator = new CategoryManipulator($categoryManager);
         $manipulator->delete($category);
     }
 
@@ -139,7 +71,7 @@ class CategoryManipulatorTest extends \PHPUnit_Framework_TestCase
             ->method('moveCategoryUp')
             ->with($this->equalTo($category));
 
-        $manipulator = new CategoryManipulator($categoryManager, $this->getMockSlugizer());
+        $manipulator = new CategoryManipulator($categoryManager);
         $manipulator->moveUp($category);
     }
 
@@ -152,7 +84,7 @@ class CategoryManipulatorTest extends \PHPUnit_Framework_TestCase
             ->method('moveCategoryDown')
             ->with($this->equalTo($category));
 
-        $manipulator = new CategoryManipulator($categoryManager, $this->getMockSlugizer());
+        $manipulator = new CategoryManipulator($categoryManager);
         $manipulator->moveDown($category);
     }
 
@@ -175,8 +107,4 @@ class CategoryManipulatorTest extends \PHPUnit_Framework_TestCase
         return $categoryManager;
     }
 
-    private function getMockSlugizer()
-    {
-        return $this->getMock('Sylius\Bundle\CategorizerBundle\Inflector\SlugizerInterface');
-    }
 }

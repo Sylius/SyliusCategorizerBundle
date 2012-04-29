@@ -13,14 +13,21 @@
 
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+                               http://symfony.com/schema/dic/services/services-1.0.xsd"
+>
 
     <parameters>
         <parameter key="sylius_categorizer.manager.category.class">Sylius\Bundle\CategorizerBundle\Entity\CategoryManager</parameter>
+        <parameter key="sylius_categorizer.loader.category.class">Sylius\Bundle\CategorizerBundle\Entity\CategoryLoader</parameter>
     </parameters>
 
     <services>
         <service id="sylius_categorizer.manager.category" class="%sylius_categorizer.manager.category.class%">
+            <argument type="service" id="sylius_categorizer.registry" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+        <service id="sylius_categorizer.loader.category" class="%sylius_categorizer.loader.category.class%">
             <argument type="service" id="sylius_categorizer.registry" />
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>

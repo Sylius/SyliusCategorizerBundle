@@ -14,11 +14,11 @@ namespace Sylius\Bundle\CategorizerBundle\Model;
 use Sylius\Bundle\CategorizerBundle\Registry\CatalogRegistry;
 
 /**
- * Manages categories.
+ * Loads category items.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
-abstract class CategoryManager implements CategoryManagerInterface
+abstract class CategoryLoader implements CategoryLoaderInterface
 {
     /**
      * Catalog registry.

@@ -30,50 +30,50 @@ class CategoryManipulator implements CategoryManipulatorInterface
     protected $categoryManager;
 
     /**
-     * Slugizer inflector.
-     *
-     * @var SlugizerInterface
-     */
-    protected $slugizer;
-
-    /**
      * Constructor.
      *
      * @param CategoryManagerInterface     $categoryManager
-     * @param SlugizerInterface         $slugizer
      */
-    public function __construct(CategoryManagerInterface $categoryManager, SlugizerInterface $slugizer)
+    public function __construct(CategoryManagerInterface $categoryManager)
     {
         $this->categoryManager = $categoryManager;
-        $this->slugizer = $slugizer;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function create(CategoryInterface $category)
     {
-        $category->setSlug($this->slugizer->slugize($category->getName()));
-        $category->incrementCreatedAt();
-
         $this->categoryManager->persistCategory($category);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function update(CategoryInterface $category)
     {
-        $category->setSlug($this->slugizer->slugize($category->getName()));
-        $category->incrementUpdatedAt();
-
         $this->categoryManager->persistCategory($category);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function delete(CategoryInterface $category)
     {
         $this->categoryManager->removeCategory($category);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function moveUp(CategoryInterface $category)
     {
         $this->categoryManager->moveCategoryUp($category);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function moveDown(CategoryInterface $category)
     {
         $this->categoryManager->moveCategoryDown($category);

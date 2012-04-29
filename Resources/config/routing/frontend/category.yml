@@ -2,7 +2,7 @@
 # (c) Paweł Jędrzejewski
 
 sylius_categorizer_category_show:
-    pattern: /{alias}/categories/{id}/{slug}
+    pattern: /{alias}/categories/{slug}
     defaults: { _controller: sylius_categorizer.controller.frontend.category:showAction }
 
 sylius_categorizer_category_list:

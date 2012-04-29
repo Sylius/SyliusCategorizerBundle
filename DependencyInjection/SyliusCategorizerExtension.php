@@ -53,19 +53,15 @@ class SyliusCategorizerExtension extends Extension
 
         foreach($config['catalogs'] as $alias => $catalog) {
             $remappedCatalogConfiguration = array(
-                'alias'          => $alias,
-                'model'          => $catalog['model'],
-                'form'           => $catalog['form'],
-                'property'       => $catalog['property'],
-                'pagination'     => !$catalog['pagination']['disable'],
-                'pagination.mpp' => $catalog['pagination']['mpp']
+                'alias'              => $alias,
+                'model'              => $catalog['model'],
+                'form'               => $catalog['form'],
+                'property'           => $catalog['property'],
+                'templates.frontend' => $catalog['templates']['frontend'],
+                'templates.backend'  => $catalog['templates']['backend'],
+                'pagination'         => !$catalog['pagination']['disable'],
+                'pagination.mpp'     => $catalog['pagination']['mpp']
             );
-            foreach ($catalog['templates']['backend'] as $key => $value) {
-                $remappedCatalogConfiguration[sprintf('templates.backend.%s', $key)] = $value;
-            }
-            foreach ($catalog['templates']['frontend'] as $key => $value) {
-                $remappedCatalogConfiguration[sprintf('templates.frontend.%s', $key)] = $value;
-            }
 
             $remappedCatalogsConfiguration[$alias] = $remappedCatalogConfiguration;
         }
@@ -75,7 +71,6 @@ class SyliusCategorizerExtension extends Extension
         $configurations = array(
             'controllers',
             'forms',
-            'inflectors',
             'manipulators',
             'registry'
         );

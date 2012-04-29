@@ -72,30 +72,6 @@ class CategoryManagerTest extends \PHPUnit_Framework_TestCase
         $categoryManager->removeCategory($category);
     }
 
-    public function testCreatePaginatorForOneToManyType()
-    {
-        $category = $this->getMockCategory();
-        $catalogRegistry = $this->getMockCatalogRegistryForCreatePaginator();
-        $entityManager = $this->getMockEntityManagerForCreatePaginator(\Doctrine\ORM\Mapping\ClassMetadataInfo::ONE_TO_MANY);
-
-        $categoryManager = new CategoryManager($catalogRegistry, $entityManager);
-        $paginator = $categoryManager->createPaginator($category, function ($queryBuilder) {});
-
-        $this->assertInstanceOf('Pagerfanta\Pagerfanta', $paginator);
-    }
-
-    public function testCreatePaginatorForManyToManyType()
-    {
-        $category = $this->getMockCategory();
-        $catalogRegistry = $this->getMockCatalogRegistryForCreatePaginator();
-        $entityManager = $this->getMockEntityManagerForCreatePaginator(\Doctrine\ORM\Mapping\ClassMetadataInfo::MANY_TO_MANY);
-
-        $categoryManager = new CategoryManager($catalogRegistry, $entityManager);
-        $paginator = $categoryManager->createPaginator($category, function ($queryBuilder) {});
-
-        $this->assertInstanceOf('Pagerfanta\Pagerfanta', $paginator);
-    }
-
     public function testCreateCategory()
     {
         $catalog = $this->getMockCatalog();

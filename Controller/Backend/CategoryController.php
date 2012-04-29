@@ -17,6 +17,7 @@ use Sylius\Bundle\CategorizerBundle\Registry\CatalogInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -32,6 +33,8 @@ class CategoryController extends ContainerAware
      *
      * @param string  $alias The key to identify catalog
      * @param integer $id    Category id
+     *
+     * @return Response
      */
     public function showAction($alias, $id)
     {
@@ -46,7 +49,7 @@ class CategoryController extends ContainerAware
         );
 
         if ($catalog->getOption('pagination')) {
-            $paginator = $this->container->get('sylius_categorizer.manager.category')->createPaginator($category);
+            $paginator = $this->container->get('sylius_categorizer.loader.category')->loadCategory($category);
             $paginator->setCurrentPage($this->container->get('request')->query->get('page', 1), true, true);
             $paginator->setMaxPerPage($catalog->getOption('pagination.mpp'));
 
@@ -56,20 +59,22 @@ class CategoryController extends ContainerAware
             $parameters[$property] = $category->{'get'.ucfirst($property)}();
         }
 
-        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.show'), $parameters);
+        return $this->container->get('templating')->renderResponse(sprintf($catalog->getOption('templates.backend'), 'show'), $parameters);
     }
 
     /**
      * Displays list of categories from specific catalog.
      *
      * @param string $alias The key to identify catalog
+     *
+     * @return Response
      */
     public function listAction($alias)
     {
         $catalog = $this->container->get('sylius_categorizer.registry')->getCatalog($alias);
         $categories = $this->container->get('sylius_categorizer.manager.category')->findCategories($catalog);
 
-        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.list'), array(
+        return $this->container->get('templating')->renderResponse(sprintf($catalog->getOption('templates.backend'), 'list'), array(
             'catalog'    => $catalog,
             'categories' => $categories
         ));
@@ -78,7 +83,10 @@ class CategoryController extends ContainerAware
     /**
      * Creates new category in given catalog.
      *
-     * @param string $alias The key to identify catalog
+     * @param Request $request
+     * @param string  $alias The key to identify catalog
+     *
+     * @return Response
      */
     public function createAction(Request $request, $alias)
     {
@@ -89,6 +97,7 @@ class CategoryController extends ContainerAware
 
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
+
             if ($form->isValid()) {
                 $this->container->get('event_dispatcher')->dispatch(SyliusCategorizerEvents::CATEGORY_CREATE, new FilterCategoryEvent($category, $catalog));
                 $this->container->get('sylius_categorizer.manipulator.category')->create($category);
@@ -99,7 +108,7 @@ class CategoryController extends ContainerAware
             }
         }
 
-        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.create'), array(
+        return $this->container->get('templating')->renderResponse(sprintf($catalog->getOption('templates.backend'), 'create'), array(
             'catalog' => $catalog,
             'form'    => $form->createView()
         ));
@@ -108,8 +117,9 @@ class CategoryController extends ContainerAware
     /**
      * Updates a category from given catalog.
      *
-     * @param string  $alias The key to identify catalog
-     * @param integer $id    Category id
+     * @param Request $request
+     * @param string  $alias   The key to identify catalog
+     * @param integer $id      Category id
      */
     public function updateAction(Request $request, $alias, $id)
     {
@@ -120,6 +130,7 @@ class CategoryController extends ContainerAware
 
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
+
             if ($form->isValid()) {
                 $this->container->get('event_dispatcher')->dispatch(SyliusCategorizerEvents::CATEGORY_UPDATE, new FilterCategoryEvent($category, $catalog));
                 $this->container->get('sylius_categorizer.manipulator.category')->update($category);
@@ -130,7 +141,7 @@ class CategoryController extends ContainerAware
             }
         }
 
-        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.backend.update'), array(
+        return $this->container->get('templating')->renderResponse(sprintf($catalog->getOption('templates.backend'), 'update'), array(
             'catalog'  => $catalog,
             'category' => $category,
             'form'     => $form->createView()
@@ -142,6 +153,8 @@ class CategoryController extends ContainerAware
      *
      * @param string  $alias
      * @param integer $id
+     *
+     * @return RedirectResponse
      */
     public function deleteAction($alias, $id)
     {
@@ -161,6 +174,8 @@ class CategoryController extends ContainerAware
      *
      * @param string  $alias The key to identify catalog
      * @param integer $id    Category id
+     *
+     * @return RedirectResponse
      */
     public function moveUpAction($alias, $id)
     {
@@ -180,6 +195,8 @@ class CategoryController extends ContainerAware
      *
      * @param string  $alias The key to identify catalog
      * @param integer $id    Category id
+     *
+     * @return RedirectResponse
      */
     public function moveDownAction($alias, $id)
     {
@@ -200,6 +217,8 @@ class CategoryController extends ContainerAware
      *
      * @param CatalogInterface $catalog The catalog
      * @param integer          $id      Category id
+     *
+     * @return CategoryInterface
      *
      * @throws NotFoundHttpException
      */

@@ -13,6 +13,8 @@ namespace Sylius\Bundle\CategorizerBundle\Controller\Frontend;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -26,12 +28,14 @@ class CategoryController extends ContainerAware
      * Displays category.
      *
      * @param string  $alias The key to identify catalog
-     * @param integer $id    Category id
+     * @param string  $id    Category slug
+     *
+     * @return Response
      */
-    public function showAction($alias, $id, $slug)
+    public function showAction($alias, $slug)
     {
         $catalog = $this->container->get('sylius_categorizer.registry')->getCatalog($alias);
-        $category = $this->container->get('sylius_categorizer.manager.category')->findCategoryBy(array('id' => $id, 'slug' => $slug), $catalog);
+        $category = $this->container->get('sylius_categorizer.manager.category')->findCategoryBy(array('slug' => $slug), $catalog);
 
         $property = $catalog->getOption('property');
 
@@ -41,7 +45,7 @@ class CategoryController extends ContainerAware
         );
 
         if ($catalog->getOption('pagination')) {
-            $paginator = $this->container->get('sylius_categorizer.manager.category')->createPaginator($category);
+            $paginator = $this->container->get('sylius_categorizer.loader.category')->loadCategory($category);
             $paginator->setCurrentPage($this->container->get('request')->query->get('page', 1), true, true);
             $paginator->setMaxPerPage($catalog->getOption('pagination.mpp'));
 
@@ -51,20 +55,22 @@ class CategoryController extends ContainerAware
             $parameters[$property] = $category->{'get'.ucfirst($property)}();
         }
 
-        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.frontend.show'), $parameters);
+        return $this->container->get('templating')->renderResponse(sprintf($catalog->getOption('templates.frontend'), 'show'), $parameters);
     }
 
     /**
      * Display table of categories of specific catalog.
      *
      * @param string $alias The key to identify catalog
+     *
+     * @return Response
      */
     public function listAction($alias)
     {
         $catalog = $this->container->get('sylius_categorizer.registry')->getCatalog($alias);
         $categories = $this->container->get('sylius_categorizer.manager.category')->findCategories($catalog);
 
-        return $this->container->get('templating')->renderResponse($catalog->getOption('templates.frontend.list'), array(
+        return $this->container->get('templating')->renderResponse(sprintf($catalog->getOption('templates.frontend'), 'list'), array(
             'catalog'    => $catalog,
             'categories' => $categories
         ));

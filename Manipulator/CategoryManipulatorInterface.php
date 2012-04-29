@@ -12,7 +12,6 @@
 namespace Sylius\Bundle\CategorizerBundle\Manipulator;
 
 use Sylius\Bundle\CategorizerBundle\Model\CatalogInterface;
-
 use Sylius\Bundle\CategorizerBundle\Model\CategoryInterface;
 
 /**

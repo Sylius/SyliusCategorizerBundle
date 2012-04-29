@@ -21,9 +21,25 @@ use Sylius\Bundle\CategorizerBundle\Model\CategoryManagerInterface;
  */
 class CatalogRegistry
 {
+    /**
+     * Catalogs configuration.
+     *
+     * @var array
+     */
     protected $configuration;
+
+    /**
+     * Catalogs.
+     *
+     * @var array An array of CatalogInterface
+     */
     protected $catalogs;
 
+    /**
+     * Constructor.
+     *
+     * @param array $configuration
+     */
     public function __construct(array $configuration)
     {
         $this->configuration = $configuration;
