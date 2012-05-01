@@ -27,14 +27,6 @@ interface CategoryManagerInterface
     function createCategory($catalog);
 
     /**
-     * Returns paginator instance for given category.
-     *
-     * @param CategoryInterface $category
-     * @param Closure           $callback
-     */
-    function createPaginator(CategoryInterface $category, \Closure $callback = null);
-
-    /**
      * Generates proper choice list for forms.
      *
      * @param string|CatalogInterface $catalog

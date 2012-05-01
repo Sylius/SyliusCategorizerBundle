@@ -11,8 +11,7 @@
 
 namespace Sylius\Bundle\CategorizerBundle\Form\Type;
 
-use Sylius\Bundle\CategorizerBundle\Form\EvenListener\BuildNestedCategoryTypeListener;
-use Symfony\Component\Form\AbstractType;
+use Sylius\Bundle\CategorizerBundle\Form\EventListener\BuildNestedCategoryTypeListener;
 use Symfony\Component\Form\FormBuilder;
 
 /**
@@ -20,7 +19,7 @@ use Symfony\Component\Form\FormBuilder;
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
-class NestedCategoryType extends AbstractType
+abstract class NestedCategoryType extends CategoryType
 {
     /**
      * {@inheritdoc}
@@ -31,7 +30,7 @@ class NestedCategoryType extends AbstractType
 
         $builder
             ->addEventSubscriber(new BuildNestedCategoryTypeListener($builder->getFormFactory()))
-            ->add('parent', 'sylius_categorizer_category', array(
+            ->add('parent', 'sylius_categorizer_category_choice', array(
                 'multiple' => false,
                 'catalog'  => $options['catalog']
             ))

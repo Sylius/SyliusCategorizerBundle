@@ -94,7 +94,7 @@ class CategoryManagerTest extends \PHPUnit_Framework_TestCase
         $catalog = $this->getMockCatalog();
 
         $catalogRegistry = $this->getMockCatalogRegistry();
-        $catalogRegistry->expects($this->once())
+        $catalogRegistry->expects($this->exactly(2))
             ->method('guessCatalog')
             ->with($this->equalTo('test'))
             ->will($this->returnValue($catalog))

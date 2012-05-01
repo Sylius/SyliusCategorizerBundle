@@ -72,49 +72,17 @@ class CategoryManager extends BaseCategoryManager
         return new $class;
     }
 
-    public function createPaginator(CategoryInterface $category, \Closure $callback = null)
-    {
-        $catalog = $this->catalogRegistry->guessCatalog($category);
-        $categoryClass = get_class($category);
-        $property = $catalog->getOption('property');
-
-        $metadata = $this->entityManager->getClassMetadata($categoryClass);
-        $itemAssociationMapping = $metadata->getAssociationMapping($property);
-
-        $itemClass = $itemAssociationMapping['targetEntity'];
-        $itemClassReflection = new \ReflectionClass($itemClass);
-
-        $alias = $property[0];
-
-        if (ClassMetadataInfo::ONE_TO_MANY === $itemAssociationMapping['type']) {
-            $queryBuilder = $this->entityManager->createQueryBuilder()
-                ->select($alias)
-                ->from($itemClass, $alias)
-                ->where($alias.'.category = ?1')
-                ->setParameter(1, $category->getId());
-        } elseif (ClassMetadataInfo::MANY_TO_MANY === $itemAssociationMapping['type']) {
-            $queryBuilder = $this->entityManager->createQueryBuilder()
-                ->select($alias)
-                ->from($itemClass, $alias)
-                ->innerJoin($alias.'.categories', 'category')
-                ->where('category.id = ?1')
-                ->setParameter(1, $category->getId());
-        }
-
-        if (null !== $callback) {
-            $callback($queryBuilder);
-        }
-
-        return new Pagerfanta(new DoctrineORMAdapter($queryBuilder->getQuery()));
-    }
-
     public function generateChoices($catalog)
     {
-        return $this->getRepository($catalog)->createQueryBuilder('c')
-            ->orderBy('c.position')
-            ->getQuery()
-            ->execute()
-        ;
+        $queryBuilder = $this->getRepository($catalog)->createQueryBuilder('c');
+
+        if ($this->isNested($catalog)) {
+            $queryBuilder->orderBy('c.left');
+        } else {
+            $queryBuilder->orderBy('c.position');
+        }
+
+        return $queryBuilder->getQuery()->execute();
     }
 
     /**
@@ -296,7 +264,7 @@ class CategoryManager extends BaseCategoryManager
         $class = $catalog->getOption('model');
         $reflection = new \ReflectionClass($class);
 
-        return $reflection->isSubclassOf('Sylius\Bundle\CategorizerBundle\Entity\NestedCategory');
+        return $reflection->isSubclassOf('Sylius\Bundle\CategorizerBundle\Model\NestedCategoryInterface');
     }
 
     /**
