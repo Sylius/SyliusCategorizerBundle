@@ -13,7 +13,7 @@ namespace Sylius\Bundle\CategorizerBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Sylius\Bundle\CategorizerBundle\Entity\Category as BaseCategory;
+use Sylius\Bundle\CategorizerBundle\Model\NestedCategory as BaseNestedCategory;
 
 /**
  * Simple default implementation for nested categories.
@@ -21,39 +21,73 @@ use Sylius\Bundle\CategorizerBundle\Entity\Category as BaseCategory;
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
-class NestedCategory extends BaseCategory
+class NestedCategory extends BaseNestedCategory
 {
-    public $treeLeft;
-    public $treeLevel;
-    public $treeRight;
-    public $treeRoot;
-    protected $parent;
-    protected $children;
 
-    public function __construct()
+    /**
+     * Tree root.
+     * Required by DoctrineExtensions.
+     *
+     * @var mixed
+     */
+    protected $root;
+
+    /**
+     * Required by DoctrineExtensions.
+     *
+     * @var mixed
+     */
+    protected $left;
+
+    /**
+     * Required by DoctrineExtensions.
+     *
+     * @var mixed
+     */
+    protected $right;
+    /**
+     * Tree level.
+     * Required by DoctrineExtensions.
+     *
+     * @var mixed
+     */
+    protected $level;
+
+    public function getRoot()
     {
-        parent::__construct();
-
-        $this->children = new ArrayCollection();
+        return $this->root;
     }
 
-    public function getParent()
+    public function setRoot($root)
     {
-        return $this->parent;
+        $this->root = $root;
     }
 
-    public function setParent(NestedCategory $parent = null)
+    public function getLeft()
     {
-        $this->parent = $parent;
+        return $this->left;
     }
 
-    public function getChildren()
+    public function setLeft($left)
     {
-        return $this->children;
+        $this->left = $left;
     }
 
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLabel()
     {
-        return str_repeat('---', $this->treeLevel).' '.$this->name;
+        return str_repeat('---', $this->level).' '.$this->name;
     }
 }
