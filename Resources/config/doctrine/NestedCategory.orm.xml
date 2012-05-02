@@ -19,13 +19,13 @@
         <order-by>
             <order-by-field name="left" direction="DESC" />
         </order-by>
-        <field name="left" column="left" type="integer">
+        <field name="left" column="tree_left" type="integer">
             <gedmo:tree-left />
         </field>
-        <field name="right" column="right" type="integer">
+        <field name="right" column="tree_right" type="integer">
             <gedmo:tree-right />
         </field>
-        <field name="level" column="level" type="integer">
+        <field name="level" column="tree_level" type="integer">
             <gedmo:tree-level />
         </field>
         <field name="name" column="name" type="string" />

@@ -31,6 +31,7 @@ abstract class NestedCategoryType extends CategoryType
         $builder
             ->addEventSubscriber(new BuildNestedCategoryTypeListener($builder->getFormFactory()))
             ->add('parent', 'sylius_categorizer_category_choice', array(
+                'required' => false,
                 'multiple' => false,
                 'catalog'  => $options['catalog']
             ))
