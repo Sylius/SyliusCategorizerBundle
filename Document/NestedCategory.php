@@ -9,39 +9,25 @@
 * file that was distributed with this source code.
 */
 
-namespace Sylius\Bundle\CategorizerBundle\Entity;
+namespace Sylius\Bundle\CategorizerBundle\Document;
 
 use Sylius\Bundle\CategorizerBundle\Model\NestedCategory as BaseNestedCategory;
 
 /**
  * Simple default implementation for nested categories.
- * Doctrine ORM driver implementation.
+ * Doctrine MongoDB ODM driver implementation.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
 class NestedCategory extends BaseNestedCategory
 {
     /**
-     * Tree root.
-     * Required by DoctrineExtensions.
+     * Tree path.
      *
-     * @var mixed
+     * @var string
      */
-    protected $root;
+    protected $path;
 
-    /**
-     * Required by DoctrineExtensions.
-     *
-     * @var mixed
-     */
-    protected $left;
-
-    /**
-     * Required by DoctrineExtensions.
-     *
-     * @var mixed
-     */
-    protected $right;
     /**
      * Tree level.
      * Required by DoctrineExtensions.
@@ -50,31 +36,41 @@ class NestedCategory extends BaseNestedCategory
      */
     protected $level;
 
-    public function getRoot()
+    /**
+     * Get path.
+     *
+     * @return string
+     */
+    public function getPath()
     {
-        return $this->root;
+        return $this->path;
     }
 
-    public function setRoot($root)
+    /**
+     * Set path.
+     *
+     * @param string $path
+     */
+    public function setPath($path)
     {
-        $this->root = $root;
+        $this->path = $path;
     }
 
-    public function getLeft()
-    {
-        return $this->left;
-    }
-
-    public function setLeft($left)
-    {
-        $this->left = $left;
-    }
-
+    /**
+     * Get category level.
+     *
+     * @return integer
+     */
     public function getLevel()
     {
         return $this->level;
     }
 
+    /**
+     * Set level.
+     *
+     * @param integer $level
+     */
     public function setLevel($level)
     {
         $this->level = $level;

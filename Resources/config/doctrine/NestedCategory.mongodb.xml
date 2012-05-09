@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+
+ This file is part of the Sylius package.
+
+ (c) Paweł Jędrzejewski
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mongo-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping"
+>
+
+    <mapped-superclass name="Sylius\Bundle\CategorizerBundle\Entity\NestedCategory">
+        <field name="path" fieldName="path" type="string">
+            <gedmo:tree-path />
+        </field>
+        <field name="level" fieldName="level" type="integer">
+            <gedmo:tree-level />
+        </field>
+        <field name="name" fieldName="name" type="string" />
+        <field name="slug" fieldName="slug" type="string">
+            <gedmo:slug fields="name" />
+        </field>
+        <field name="createdAt" fieldName="created_at" type="timestamp">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="updatedAt" fieldName="updated_at" type="timestamp">
+            <gedmo:timestampable on="update"/>
+        </field>
+        <gedmo:tree type="materializedPath" />
+    </mapped-superclass>
+
+</doctrine-mongo-mapping>

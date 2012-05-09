@@ -15,8 +15,6 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnitOfWork;
-use Pagerfanta\Pagerfanta;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Sylius\Bundle\CategorizerBundle\Model\CategoryInterface;
 use Sylius\Bundle\CategorizerBundle\Model\CategoryManager as BaseCategoryManager;
 use Sylius\Bundle\CategorizerBundle\Registry\CatalogInterface;
