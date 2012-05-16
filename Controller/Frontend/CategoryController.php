@@ -27,15 +27,20 @@ class CategoryController extends ContainerAware
     /**
      * Displays category.
      *
-     * @param string  $alias The key to identify catalog
-     * @param string  $id    Category slug
+     * @param Request $request
+     * @param string  $alias   The key to identify catalog
+     * @param string  $id      Category slug
      *
      * @return Response
      */
-    public function showAction($alias, $slug)
+    public function showAction(Request $request, $alias, $slug)
     {
         $catalog = $this->container->get('sylius_categorizer.registry')->getCatalog($alias);
         $category = $this->container->get('sylius_categorizer.manager.category')->findCategoryBy(array('slug' => $slug), $catalog);
+
+        if (!$category) {
+            throw new NotFoundHttpException('Requested category does not exist');
+        }
 
         $property = $catalog->getOption('property');
 
@@ -46,7 +51,7 @@ class CategoryController extends ContainerAware
 
         if ($catalog->getOption('pagination')) {
             $paginator = $this->container->get('sylius_categorizer.loader.category')->loadCategory($category);
-            $paginator->setCurrentPage($this->container->get('request')->query->get('page', 1), true, true);
+            $paginator->setCurrentPage($request->query->get('page', 1), true, true);
             $paginator->setMaxPerPage($catalog->getOption('pagination.mpp'));
 
             $parameters[$property] = $paginator->getCurrentPageResults();
