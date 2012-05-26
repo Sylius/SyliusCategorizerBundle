@@ -16,7 +16,8 @@ use Sylius\Bundle\CategorizerBundle\Registry\CatalogRegistry;
 use Sylius\Bundle\CategorizerBundle\SyliusCategorizerBundle;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Category choice form type.
@@ -63,12 +64,8 @@ class CategoryChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!isset($options['catalog'])) {
-            throw new \InvalidArgumentException('Catalog must be defined in category choice type options.');
-        }
-
         $this->categoryChoiceList->initializeCatalog($this->catalogRegistry->getCatalog($options['catalog']));
 
         $doctrineBasedDrivers = array(
@@ -85,20 +82,24 @@ class CategoryChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'catalog'     => null,
-            'multiple'    => true,
-            'expanded'    => false,
-            'choice_list' => $this->categoryChoiceList,
-        );
+        $resolver
+           ->setDefaults(array(
+                'multiple'    => true,
+                'expanded'    => false,
+                'choice_list' => $this->categoryChoiceList,
+            ))
+            ->setRequired(array(
+                'catalog'
+            ))
+        ;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getParent(array $options)
+    public function getParent()
     {
         return 'choice';
     }

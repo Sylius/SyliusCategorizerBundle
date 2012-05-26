@@ -12,7 +12,8 @@
 namespace Sylius\Bundle\CategorizerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Category form type.
@@ -24,12 +25,8 @@ class CategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilder $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!isset($options['catalog'])) {
-            throw new \InvalidArgumentException('Catalog must be defined in category choice type options.');
-        }
-
         $builder
             ->add('name', 'text')
         ;
@@ -38,11 +35,13 @@ class CategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getDefaultOptions()
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'catalog' => null
-        );
+        $resolver
+            ->setRequired(array(
+                'catalog'
+            ))
+        ;
     }
 
     /**
