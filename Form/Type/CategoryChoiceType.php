@@ -12,17 +12,20 @@
 namespace Sylius\Bundle\CategorizerBundle\Form\Type;
 
 use Sylius\Bundle\CategorizerBundle\Form\ChoiceList\CategoryChoiceList;
+use Sylius\Bundle\CategorizerBundle\Model\CategoryManagerInterface;
 use Sylius\Bundle\CategorizerBundle\Registry\CatalogRegistry;
 use Sylius\Bundle\CategorizerBundle\SyliusCategorizerBundle;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Category choice form type.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
+ * @author Саша Стаменковић <umpirsky@gmail.com>
  */
 class CategoryChoiceType extends AbstractType
 {
@@ -34,11 +37,11 @@ class CategoryChoiceType extends AbstractType
     protected $catalogRegistry;
 
     /**
-     * Category choice list.
+     * Category manager.
      *
-     * @var CategoryChoiceList
+     * @var CategoryManagerInterface
      */
-    protected $categoryChoiceList;
+    protected $categoryManager;
 
     /**
      * Bundle driver.
@@ -50,14 +53,14 @@ class CategoryChoiceType extends AbstractType
     /**
      * Constructor.
      *
-     * @param CatalogRegistry    $catalogRegistry
-     * @param CategoryChoiceList $categoryChoiceList
-     * @param string             $driver
+     * @param CatalogRegistry          $catalogRegistry
+     * @param CategoryManagerInterface $categoryManager
+     * @param string                   $driver
      */
-    public function __construct(CatalogRegistry $catalogRegistry, CategoryChoiceList $categoryChoiceList, $driver)
+    public function __construct(CatalogRegistry $catalogRegistry, CategoryManagerInterface $categoryManager, $driver)
     {
         $this->catalogRegistry = $catalogRegistry;
-        $this->categoryChoiceList = $categoryChoiceList;
+        $this->categoryManager = $categoryManager;
         $this->driver = $driver;
     }
 
@@ -66,8 +69,6 @@ class CategoryChoiceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->categoryChoiceList->initializeCatalog($this->catalogRegistry->getCatalog($options['catalog']));
-
         $doctrineBasedDrivers = array(
             SyliusCategorizerBundle::DRIVER_DOCTRINE_ORM,
             SyliusCategorizerBundle::DRIVER_DOCTRINE_MONGODB_ODM,
@@ -84,11 +85,16 @@ class CategoryChoiceType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $categoryManager = $this->categoryManager;
+        $choiceList = function (Options $options) use ($categoryManager) {
+            return new CategoryChoiceList($categoryManager, $options['catalog']);
+        };
+
         $resolver
            ->setDefaults(array(
                 'multiple'    => true,
                 'expanded'    => false,
-                'choice_list' => $this->categoryChoiceList,
+                'choice_list' => $choiceList,
             ))
             ->setRequired(array(
                 'catalog'

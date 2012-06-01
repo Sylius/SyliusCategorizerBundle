@@ -29,7 +29,7 @@
         </service>
         <service id="sylius_categorizer.form.type.category_choice" class="%sylius_categorizer.form.type.category_choice.class%">
             <argument type="service" id="sylius_categorizer.registry" />
-            <argument type="service" id="sylius_categorizer.form.choice_list.category" />
+            <argument type="service" id="sylius_categorizer.manager.category" />
             <argument>%sylius_categorizer.driver%</argument>
             <tag name="form.type" alias="sylius_categorizer_category_choice" />
         </service>
