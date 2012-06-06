@@ -21,35 +21,20 @@ use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
  * Category choice list.
  *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
+ * @author Саша Стаменковић <umpirsky@gmail.com>
  */
 class CategoryChoiceList extends ObjectChoiceList
 {
     /**
-     * Category manager.
-     *
-     * @var CategoryManagerInterface
-     */
-    protected $categoryManager;
-
-    /**
      * Constructor.
      *
-     * @param $categoryManager
+     * @param CategoryManagerInterface $categoryManager
+     * @param string|CatalogInterface  $catalog
      */
-    public function __construct(CategoryManagerInterface $categoryManager)
+    public function __construct(CategoryManagerInterface $categoryManager, $catalog)
     {
-        $this->categoryManager = $categoryManager;
-
         parent::__construct(array(), 'label', array(), null, null, 'id');
-    }
-
-    /**
-     * Defines categories catalog.
-     *
-     * @param CatalogInterface $catalog
-     */
-    public function initializeCatalog(CatalogInterface $catalog)
-    {
-        $this->initialize($this->categoryManager->generateChoices($catalog), array(), array());
+        
+        $this->initialize($categoryManager->generateChoices($catalog), array(), array());
     }
 }
