@@ -1,4 +1,4 @@
-SyliusCategorizerBundle
+SyliusCategorizerBundle [![Build status...](https://secure.travis-ci.org/Sylius/SyliusCategorizerBundle.png)](http://travis-ci.org/Sylius/SyliusCategorizerBundle)
 =======================
 
 Categorizing whatever you want just got easier. Grouping products, posts or any other model is common feature in most of modern web applications.
@@ -19,15 +19,6 @@ Features
 * You can create as many catalogs as you want, by `catalog` we understand set of categories and the items, for example products or blog posts.
 * It uses [Pagerfanta](http://github.com/whiteoctober/Pagerfanta) to paginate over the category items, but you can easily disable the pagination for specific catalog.
 * Thanks to awesome [Symfony2](http://symfony.com) everything is configurable and extensible.
-
-### Planned or in progress
-
-* More unit tests. [![Build status...](https://secure.travis-ci.org/Sylius/SyliusCategorizerBundle.png)](http://travis-ci.org/Sylius/SyliusCategorizerBundle)
-* Doctrine MongoDB ODM driver. `*`
-* Counting items in category.
-* Item bubbling.
-
-`*` - wishlist, would love to see a contribution.
 
 Sylius
 ------
