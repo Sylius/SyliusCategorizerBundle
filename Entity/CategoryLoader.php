@@ -67,14 +67,14 @@ class CategoryLoader extends BaseCategoryLoader
             $queryBuilder = $this->entityManager->createQueryBuilder()
                 ->select($alias)
                 ->from($itemClass, $alias)
-                ->where($alias.'.category = ?1')
+                ->where($alias.'.'.$itemAssociationMapping['mappedBy'].' = ?1')
                 ->setParameter(1, $category->getId())
             ;
         } elseif (ClassMetadataInfo::MANY_TO_MANY === $itemAssociationMapping['type']) {
             $queryBuilder = $this->entityManager->createQueryBuilder()
                 ->select($alias)
                 ->from($itemClass, $alias)
-                ->innerJoin($alias.'.categories', 'category')
+                ->innerJoin($alias.'.'.$itemAssociationMapping['mappedBy'], 'category')
                 ->where('category.id = ?1')
                 ->setParameter(1, $category->getId())
             ;
