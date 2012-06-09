@@ -15,10 +15,10 @@ use Sylius\Bundle\CategorizerBundle\EventDispatcher\Event\FilterCategoryEvent;
 use Sylius\Bundle\CategorizerBundle\EventDispatcher\SyliusCategorizerEvents;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command for console that deletes category.
@@ -70,7 +70,7 @@ EOT
         $this->getContainer()->get('sylius_categorizer.manipulator.category')->delete($category);
 
         $output->writeln(sprintf(
-            '<info>[Sylius]</info> Deleted category with id <comment>%s</comment> from catalog with alias <comment>%s</comment>.',
+            '<info>[Sylius:Categorizer]</info> Deleted category with id <comment>%s</comment> from catalog with alias <comment>%s</comment>.',
             $input->getArgument('id'),
             $input->getArgument('alias')
         ));
