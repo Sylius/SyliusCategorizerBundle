@@ -4,5 +4,5 @@
 sylius_categorizer:
     label:
         category:
-            name: "Name"
-            parent: "Parent"
+            name: "Naziv"
+            parent: "Roditelj"
