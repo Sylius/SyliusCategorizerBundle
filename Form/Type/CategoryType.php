@@ -28,7 +28,9 @@ class CategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text')
+            ->add('name', 'text', array(
+                'label' => 'sylius_categorizer.label.category.name'
+            ))
         ;
     }
 
