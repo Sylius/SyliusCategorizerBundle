@@ -18,7 +18,7 @@
 >
 
     <parameters>
-        <parameter key="sylius_categorizer.registry.class">Sylius\Bundle\CategorizerBundle\Registry\CatalogRegistry</parameter>
+        <parameter key="sylius_categorizer.registry.class">Sylius\Component\Categorizer\Registry\CatalogRegistry</parameter>
     </parameters>
 
     <services>

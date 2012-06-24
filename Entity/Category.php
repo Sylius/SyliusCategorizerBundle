@@ -11,11 +11,11 @@
 
 namespace Sylius\Bundle\CategorizerBundle\Entity;
 
-use Sylius\Bundle\CategorizerBundle\Model\Category as BaseCategory;
+use Sylius\Component\Categorizer\Model\Category as BaseCategory;
 
 /**
  * Catalog category entity.
- * 
+ *
  * @author Paweł Jędrzejewski <pjedrzejewski@diweb.pl>
  */
 class Category extends BaseCategory

@@ -17,10 +17,10 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnitOfWork;
 use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Sylius\Bundle\CategorizerBundle\Model\CategoryInterface;
-use Sylius\Bundle\CategorizerBundle\Model\CategoryManager as BaseCategoryManager;
-use Sylius\Bundle\CategorizerBundle\Registry\CatalogInterface;
-use Sylius\Bundle\CategorizerBundle\Registry\CatalogRegistry;
+use Sylius\Component\Categorizer\Model\CategoryInterface;
+use Sylius\Component\Categorizer\Manager\CategoryManager as BaseCategoryManager;
+use Sylius\Component\Categorizer\Registry\CatalogInterface;
+use Sylius\Component\Categorizer\Registry\CatalogRegistry;
 
 /**
  * ORM implementation of category model manager.
@@ -264,7 +264,7 @@ class CategoryManager extends BaseCategoryManager
         $class = $catalog->getOption('model');
         $reflection = new \ReflectionClass($class);
 
-        return $reflection->isSubclassOf('Sylius\Bundle\CategorizerBundle\Model\NestedCategoryInterface');
+        return $reflection->isSubclassOf('Sylius\Component\Categorizer\Model\NestedCategoryInterface');
     }
 
     /**

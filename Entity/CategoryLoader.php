@@ -15,9 +15,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
-use Sylius\Bundle\CategorizerBundle\Model\CategoryInterface;
-use Sylius\Bundle\CategorizerBundle\Model\CategoryLoader as BaseCategoryLoader;
-use Sylius\Bundle\CategorizerBundle\Registry\CatalogRegistry;
+use Sylius\Component\Categorizer\Model\CategoryInterface;
+use Sylius\Component\Categorizer\Loader\CategoryLoader as BaseCategoryLoader;
+use Sylius\Component\Categorizer\Registry\CatalogRegistry;
 
 /**
  * Doctrine ORM driver implementation of category model loader.

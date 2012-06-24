@@ -13,7 +13,7 @@ namespace Sylius\Bundle\CategorizerBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Sylius\Bundle\CategorizerBundle\Model\NestedCategory as BaseNestedCategory;
+use Sylius\Component\Categorizer\Model\NestedCategory as BaseNestedCategory;
 
 /**
  * Simple default implementation for nested categories.
