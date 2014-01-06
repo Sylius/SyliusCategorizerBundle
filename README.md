@@ -1,6 +1,8 @@
 SyliusCategorizerBundle [![Build status...](https://secure.travis-ci.org/Sylius/SyliusCategorizerBundle.png)](http://travis-ci.org/Sylius/SyliusCategorizerBundle)
 =======================
 
+**WARNING! This bundle is DEPRACATED and NOT MAINTAINED.** Please use the [SyliusTaxonomiesBundle](http://docs.sylius.org/en/latest/bundles/SyliusTaxonomiesBundle/index.html) as an alternative.
+
 Categorizing whatever you want just got easier. Grouping products, posts or any other model is common feature in most of modern web applications.
 So why implement it every time you need it? You can use this bundle to create multiple categorized catalogs of any object.
 It provides all controllers, routing, base mapping and services that will boost you development.
